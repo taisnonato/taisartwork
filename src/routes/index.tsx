@@ -156,12 +156,16 @@ function Index() {
           <div className="md:col-span-7 md:pl-8">
             <p className="eyebrow text-moss">Sobre</p>
             <h2 className="text-display text-4xl md:text-6xl text-forest mt-4">
-              Design com raízes, <span className="italic">feito à mão</span>.
+              Minha história.
             </h2>
             <p className="mt-6 text-base md:text-lg text-muted-foreground leading-relaxed">
-              Trabalho como designer independente há mais de seis anos, colaborando com marcas
-              pequenas e médias que valorizam ofício e narrativa. Meu processo começa com
-              conversa — entender o terreno antes de plantar qualquer coisa.
+              Minha jornada com a arte começou ainda na infância, quando fazia comissões no Orkut
+              e capas para Facebook, foi ali que nasceu minha vontade de explorar o design de
+              verdade. Sou formada em Design de Animação, com experiência que vai do Design Gráfico
+              à Ilustração. Hoje, estou me especializando em Design iGaming, unindo tudo o que
+              aprendi na faculdade com cursos focados na área, e vivendo minha primeira experiência
+              atuando nesse mercado, sempre buscando expandir meu repertório através de novos cursos
+              e desafios.
             </p>
             <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-border pt-8">
               <div>
