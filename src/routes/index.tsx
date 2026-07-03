@@ -36,7 +36,7 @@ function Index() {
       <header className="sticky top-0 z-40 backdrop-blur-md bg-background/70 border-b border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 md:px-10 flex items-center justify-between h-16">
           <a href="#top" className="text-display text-xl text-forest">
-            estúdio<span className="italic text-moss"> verde</span>
+            Tais<span className="italic text-moss"> artwork</span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
             <a href="#work" className="hover:text-forest transition-colors">Trabalhos</a>
