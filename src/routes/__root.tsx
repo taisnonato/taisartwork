@@ -79,15 +79,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Portfólio de Tais Artwork: ilustração autoral, design para social media e design para iGaming. Um sistema visual coeso para marcas que valorizam narrativa e detalhe.",
+          "Portfólio de Tais: ilustração autoral, design para social media e design para iGaming. Um sistema visual coeso para marcas que valorizam narrativa e detalhe.",
       },
       { property: "og:title", content: "Tais Artwork — Ilustração, Social Media & iGaming" },
       {
         property: "og:description",
-        content: "Ilustração autoral, social media e iGaming — portfólio minimalista de Tais Artwork.",
+        content: "Portfólio de Tais: ilustração autoral, design para social media e design para iGaming. Um sistema visual coeso para marcas que valorizam narrativa e detalhe.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Tais Artwork — Ilustração, Social Media & iGaming" },
+      { name: "twitter:description", content: "Portfólio de Tais: ilustração autoral, design para social media e design para iGaming. Um sistema visual coeso para marcas que valorizam narrativa e detalhe." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/98293c69-6a1f-44dd-b818-fd5363f18dfb/id-preview-18f45911--c80499ee-1221-4813-a9c3-a179c29debdb.lovable.app-1784155987534.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/98293c69-6a1f-44dd-b818-fd5363f18dfb/id-preview-18f45911--c80499ee-1221-4813-a9c3-a179c29debdb.lovable.app-1784155987534.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
