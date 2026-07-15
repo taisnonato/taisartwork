@@ -6,7 +6,8 @@ import work3 from "@/assets/work-3.jpg";
 import work4 from "@/assets/work-4.jpg";
 import work5 from "@/assets/work-5.jpg";
 import work6 from "@/assets/work-6.jpg";
-import portrait from "@/assets/portrait.jpg";
+import portraitAsset from "@/assets/portrait-tais.png.asset.json";
+const portrait = portraitAsset.url;
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -272,7 +273,15 @@ function Index() {
 
       {/* Intro */}
       <section className="border-t border-border/60">
-        <div className="mx-auto max-w-[1100px] px-6 md:px-10 py-24 md:py-36">
+        <div className="mx-auto max-w-[1200px] px-6 md:px-10 py-24 md:py-36 grid md:grid-cols-[5fr_7fr] gap-10 md:gap-16 items-center">
+          <Reveal>
+            <img
+              src={portrait}
+              alt="Retrato de Tais, ilustradora e designer"
+              className="w-full h-auto object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-all duration-700"
+              loading="lazy"
+            />
+          </Reveal>
           <Reveal>
             <p className="eyebrow text-muted-foreground">{t.intro.eyebrow}</p>
             <p className="mt-8 text-2xl md:text-4xl leading-[1.35] text-foreground font-serif">
