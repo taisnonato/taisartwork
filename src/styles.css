@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Editorial portfolio design system — sage & forest green.
- * All colors in oklch. Fonts loaded via <link> in src/routes/__root.tsx.
+ * Minimalist portfolio design system — neutral palette + single warm accent.
+ * Fonts loaded via <link> in src/routes/__root.tsx.
  */
 
 @theme inline {
@@ -21,7 +21,7 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
+  --color-popover-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -30,75 +30,58 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-ink: var(--accent-ink);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --color-sage: var(--sage);
-  --color-moss: var(--moss);
-  --color-forest: var(--forest);
-  --color-cream: var(--cream);
-  --color-ink: var(--ink);
-
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
-  --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.25rem;
 
-  /* Editorial green palette */
-  --cream: oklch(0.975 0.012 95);
-  --ink: oklch(0.22 0.02 145);
-  --sage: oklch(0.82 0.045 145);
-  --moss: oklch(0.55 0.08 145);
-  --forest: oklch(0.32 0.06 150);
-
-  --background: var(--cream);
-  --foreground: var(--ink);
-  --card: oklch(0.99 0.008 95);
-  --card-foreground: var(--ink);
-  --popover: var(--cream);
-  --popover-foreground: var(--ink);
-  --primary: var(--forest);
-  --primary-foreground: var(--cream);
-  --secondary: oklch(0.94 0.02 120);
-  --secondary-foreground: var(--forest);
-  --muted: oklch(0.94 0.015 110);
-  --muted-foreground: oklch(0.45 0.02 145);
-  --accent: var(--sage);
-  --accent-foreground: var(--forest);
+  /* Neutral minimalist palette */
+  --background: oklch(0.985 0.002 90);
+  --foreground: oklch(0.18 0.005 260);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: var(--background);
+  --primary: var(--foreground);
+  --primary-foreground: var(--background);
+  --secondary: oklch(0.96 0.003 90);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.94 0.003 90);
+  --muted-foreground: oklch(0.5 0.008 260);
+  --accent: oklch(0.75 0.11 55);
+  --accent-foreground: var(--foreground);
+  --accent-ink: oklch(0.62 0.13 45);
   --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: var(--cream);
-  --border: oklch(0.88 0.015 120);
-  --input: oklch(0.88 0.015 120);
-  --ring: var(--moss);
+  --destructive-foreground: var(--background);
+  --border: oklch(0.9 0.003 90);
+  --input: var(--border);
+  --ring: var(--accent-ink);
 }
 
 .dark {
-  --background: oklch(0.18 0.015 150);
-  --foreground: var(--cream);
-  --card: oklch(0.22 0.02 150);
-  --card-foreground: var(--cream);
-  --primary: var(--sage);
-  --primary-foreground: oklch(0.18 0.015 150);
-  --border: oklch(1 0 0 / 10%);
+  --background: oklch(0.14 0.005 260);
+  --foreground: oklch(0.96 0.003 90);
+  --border: oklch(1 0 0 / 12%);
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
+  * { border-color: var(--color-border); }
   html {
     font-family: var(--font-sans);
+    scroll-behavior: smooth;
   }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "ss02";
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, .font-serif {
@@ -117,8 +100,8 @@
 
 @utility eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   font-weight: 500;
 }
