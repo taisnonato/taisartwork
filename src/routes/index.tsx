@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import work1 from "@/assets/work-1.jpg";
 import work2 from "@/assets/work-2.jpg";
 import work3 from "@/assets/work-3.jpg";
@@ -11,231 +12,414 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Project = {
-  title: string;
-  category: string;
-  year: string;
-  image: string;
-  w: number;
-  h: number;
-};
+type Lang = "pt" | "en" | "es";
 
-const projects: Project[] = [
-  { title: "Herbário", category: "Identidade Visual", year: "2025", image: work1, w: 1024, h: 1280 },
-  { title: "Folha App", category: "Produto Digital", year: "2025", image: work2, w: 1024, h: 1024 },
-  { title: "Cartaz Olive", category: "Direção de Arte", year: "2024", image: work3, w: 1024, h: 1400 },
-  { title: "Estúdio Verde", category: "Web Design", year: "2024", image: work4, w: 1280, h: 1024 },
-  { title: "Papelaria Geal", category: "Branding", year: "2024", image: work5, w: 1024, h: 1100 },
-  { title: "Botânica", category: "Ilustração", year: "2023", image: work6, w: 1024, h: 1300 },
-];
+const dict = {
+  pt: {
+    nav: { work: "Ilustração", social: "Social Media", igaming: "iGaming", contact: "Contato" },
+    hero: {
+      role: "Ilustradora & Designer",
+      title1: "Traço próprio,",
+      title2: "design com propósito.",
+      scroll: "Role para explorar",
+    },
+    intro: {
+      eyebrow: "Sobre o processo",
+      body: "Trabalho em três frentes que se conversam: ilustração autoral, design para social media e design para iGaming. Em todas elas, o ponto de partida é o mesmo — narrativa, composição e um olhar cuidadoso para o detalhe. Cada projeto começa com uma conversa e termina com um sistema visual que pode crescer com a marca.",
+    },
+    illu: {
+      eyebrow: "01 · Ilustração",
+      title: "Ilustração autoral.",
+      desc: "Peças pessoais e comissionadas, do estudo de personagem ao acabamento final.",
+    },
+    social: {
+      eyebrow: "02 · Social Media",
+      title: "Design para redes.",
+      desc: "Sistemas visuais para feed, stories e campanhas — coesos, escaláveis e prontos para publicar.",
+      feed: "Feed",
+      story: "Stories",
+    },
+    igaming: {
+      eyebrow: "03 · iGaming",
+      title: "Design para iGaming.",
+      cases: [
+        {
+          brand: "Aurora Slots",
+          goal: "Identidade visual e key art para o lançamento de uma slot temática — sistema de banners, ícones e teasers para a campanha de estreia.",
+        },
+        {
+          brand: "Nova Bet",
+          goal: "Redesign das peças promocionais de cassino ao vivo, alinhando hierarquia, CTAs e ritmo visual entre web, app e ads pagos.",
+        },
+        {
+          brand: "Reel Studio",
+          goal: "Direção de arte para uma série de mini-jogos, do moodboard aos símbolos finais, mantendo consistência entre títulos da mesma família.",
+        },
+      ],
+    },
+    contact: {
+      eyebrow: "Contato",
+      title1: "Vamos criar",
+      title2: "algo juntos?",
+      email: "ola@taisartwork.com",
+      social: { ig: "Instagram", be: "Behance", ln: "LinkedIn" },
+      footer: "© 2026 Tais Artwork · Feito com calma",
+    },
+  },
+  en: {
+    nav: { work: "Illustration", social: "Social Media", igaming: "iGaming", contact: "Contact" },
+    hero: {
+      role: "Illustrator & Designer",
+      title1: "A signature line,",
+      title2: "design with purpose.",
+      scroll: "Scroll to explore",
+    },
+    intro: {
+      eyebrow: "About the process",
+      body: "I work across three connected practices: personal illustration, social media design, and iGaming design. The starting point is always the same — narrative, composition, and a careful eye for detail. Each project begins with a conversation and ends with a visual system that can grow with the brand.",
+    },
+    illu: {
+      eyebrow: "01 · Illustration",
+      title: "Personal illustration.",
+      desc: "Personal and commissioned pieces, from character studies to final artwork.",
+    },
+    social: {
+      eyebrow: "02 · Social Media",
+      title: "Design for social.",
+      desc: "Visual systems for feed, stories and campaigns — cohesive, scalable and ready to publish.",
+      feed: "Feed",
+      story: "Stories",
+    },
+    igaming: {
+      eyebrow: "03 · iGaming",
+      title: "Design for iGaming.",
+      cases: [
+        {
+          brand: "Aurora Slots",
+          goal: "Visual identity and key art for a themed slot launch — banner system, icons and teasers for the debut campaign.",
+        },
+        {
+          brand: "Nova Bet",
+          goal: "Redesign of live casino promo assets, aligning hierarchy, CTAs and visual rhythm across web, app and paid ads.",
+        },
+        {
+          brand: "Reel Studio",
+          goal: "Art direction for a series of mini-games, from moodboard to final symbols, keeping consistency across titles in the same family.",
+        },
+      ],
+    },
+    contact: {
+      eyebrow: "Contact",
+      title1: "Let's make",
+      title2: "something together?",
+      email: "ola@taisartwork.com",
+      social: { ig: "Instagram", be: "Behance", ln: "LinkedIn" },
+      footer: "© 2026 Tais Artwork · Made with care",
+    },
+  },
+  es: {
+    nav: { work: "Ilustración", social: "Social Media", igaming: "iGaming", contact: "Contacto" },
+    hero: {
+      role: "Ilustradora y Diseñadora",
+      title1: "Trazo propio,",
+      title2: "diseño con propósito.",
+      scroll: "Desliza para explorar",
+    },
+    intro: {
+      eyebrow: "Sobre el proceso",
+      body: "Trabajo en tres frentes que dialogan entre sí: ilustración de autor, diseño para redes sociales y diseño para iGaming. En todas, el punto de partida es el mismo — narrativa, composición y una mirada cuidadosa al detalle. Cada proyecto empieza con una conversación y termina con un sistema visual que puede crecer con la marca.",
+    },
+    illu: {
+      eyebrow: "01 · Ilustración",
+      title: "Ilustración de autor.",
+      desc: "Piezas personales y por encargo, del estudio de personaje al acabado final.",
+    },
+    social: {
+      eyebrow: "02 · Social Media",
+      title: "Diseño para redes.",
+      desc: "Sistemas visuales para feed, historias y campañas — coherentes, escalables y listos para publicar.",
+      feed: "Feed",
+      story: "Historias",
+    },
+    igaming: {
+      eyebrow: "03 · iGaming",
+      title: "Diseño para iGaming.",
+      cases: [
+        {
+          brand: "Aurora Slots",
+          goal: "Identidad visual y key art para el lanzamiento de una slot temática — sistema de banners, íconos y teasers para la campaña de estreno.",
+        },
+        {
+          brand: "Nova Bet",
+          goal: "Rediseño de las piezas promocionales de casino en vivo, alineando jerarquía, CTAs y ritmo visual entre web, app y anuncios pagos.",
+        },
+        {
+          brand: "Reel Studio",
+          goal: "Dirección de arte para una serie de mini-juegos, del moodboard a los símbolos finales, manteniendo consistencia entre títulos de la misma familia.",
+        },
+      ],
+    },
+    contact: {
+      eyebrow: "Contacto",
+      title1: "¿Creamos algo",
+      title2: "juntos?",
+      email: "ola@taisartwork.com",
+      social: { ig: "Instagram", be: "Behance", ln: "LinkedIn" },
+      footer: "© 2026 Tais Artwork · Hecho con calma",
+    },
+  },
+} as const;
+
+const illustrations = [work1, work3, work6, work2];
+const socialPieces = [work4, work5, work2, work1];
+const igamingImages = [work3, work4, work6];
+
+function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setVisible(true);
+            io.disconnect();
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div
+      ref={ref}
+      className={`${className} transition-all duration-[900ms] ease-out ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
 
 function Index() {
+  const [lang, setLang] = useState<Lang>("pt");
+  const t = dict[lang];
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground scroll-smooth">
       {/* Nav */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-background/70 border-b border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-10 flex items-center justify-between h-16">
-          <a href="#top" className="text-display text-xl text-forest">
-            Tais<span className="italic text-moss"> artwork</span>
+      <header className="fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-background/75 border-b border-border/50">
+        <div className="mx-auto max-w-[1300px] px-6 md:px-10 flex items-center justify-between h-16">
+          <a href="#top" className="text-display text-lg tracking-tight text-foreground">
+            Tais<span className="italic text-accent-ink"> artwork</span>
           </a>
-          <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
-            <a href="#work" className="hover:text-forest transition-colors">Trabalhos</a>
-            <a href="#about" className="hover:text-forest transition-colors">Sobre</a>
-            <a href="#services" className="hover:text-forest transition-colors">Serviços</a>
-            <a href="#contact" className="hover:text-forest transition-colors">Contato</a>
+          <nav className="hidden md:flex items-center gap-8 text-[13px] text-muted-foreground">
+            <a href="#illustration" className="hover:text-foreground transition-colors">{t.nav.work}</a>
+            <a href="#social" className="hover:text-foreground transition-colors">{t.nav.social}</a>
+            <a href="#igaming" className="hover:text-foreground transition-colors">{t.nav.igaming}</a>
+            <a href="#contact" className="hover:text-foreground transition-colors">{t.nav.contact}</a>
           </nav>
-          <a
-            href="#contact"
-            className="rounded-full bg-primary text-primary-foreground text-xs px-4 py-2 hover:bg-moss transition-colors"
-          >
-            Iniciar projeto
-          </a>
+          <div className="flex items-center gap-1 text-[11px] tracking-[0.16em] uppercase text-muted-foreground">
+            {(["pt", "en", "es"] as Lang[]).map((l, i) => (
+              <span key={l} className="flex items-center">
+                {i > 0 && <span className="mx-1.5 opacity-40">/</span>}
+                <button
+                  onClick={() => setLang(l)}
+                  className={`transition-colors ${
+                    lang === l ? "text-foreground font-medium" : "hover:text-foreground"
+                  }`}
+                  aria-label={`Switch language to ${l.toUpperCase()}`}
+                >
+                  {l}
+                </button>
+              </span>
+            ))}
+          </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section id="top" className="mx-auto max-w-[1400px] px-6 md:px-10 pt-16 md:pt-28 pb-20">
-        <div className="grid md:grid-cols-12 gap-10 items-end">
-          <div className="md:col-span-8">
-            <p className="eyebrow text-moss">Portfólio · 2019 — 2026</p>
-            <h1 className="text-display mt-6 text-[3.2rem] sm:text-[4.5rem] md:text-[7rem] leading-[0.92] text-forest">
-              Design que <br />
-              <span className="italic text-moss">respira</span>, cresce <br />
-              e permanece.
+      <section id="top" className="mx-auto max-w-[1300px] px-6 md:px-10 pt-36 md:pt-44 pb-24 md:pb-32">
+        <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-end">
+          <div className="md:col-span-7">
+            <p className="eyebrow text-muted-foreground">{t.hero.role}</p>
+            <h1 className="text-display mt-8 text-[3rem] sm:text-[4.5rem] md:text-[6.5rem] leading-[0.95] text-foreground">
+              {t.hero.title1} <br />
+              <span className="italic text-accent-ink">{t.hero.title2}</span>
             </h1>
           </div>
-          <div className="md:col-span-4 md:pb-4">
-            <p className="text-base md:text-lg text-muted-foreground max-w-sm">
-              Sou designer independente. Crio identidades visuais, produtos digitais e
-              direção de arte para marcas que valorizam calma, ofício e detalhe.
-            </p>
-            <div className="mt-6 flex items-center gap-3">
-              <span className="h-2 w-2 rounded-full bg-moss animate-pulse" />
-              <span className="text-xs text-muted-foreground">Aceitando projetos para Q2</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Marquee tag row */}
-      <div className="border-y border-border/60 bg-secondary/40">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-4 flex flex-wrap items-center gap-x-8 gap-y-2 text-xs text-muted-foreground">
-          <span className="eyebrow text-forest">Especialidades</span>
-          <span>Identidade Visual</span>
-          <span>·</span>
-          <span>Design Editorial</span>
-          <span>·</span>
-          <span>Produto Digital</span>
-          <span>·</span>
-          <span>Direção de Arte</span>
-          <span>·</span>
-          <span>Packaging</span>
-          <span>·</span>
-          <span>Tipografia</span>
-        </div>
-      </div>
-
-      {/* Work — Masonry */}
-      <section id="work" className="mx-auto max-w-[1400px] px-6 md:px-10 py-20 md:py-28">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <p className="eyebrow text-moss">Trabalhos selecionados</p>
-            <h2 className="text-display text-4xl md:text-6xl text-forest mt-3">
-              Um jardim de <span className="italic">projetos</span>.
-            </h2>
-          </div>
-          <a href="#contact" className="hidden md:inline text-sm text-muted-foreground hover:text-forest">
-            Ver arquivo completo →
-          </a>
-        </div>
-
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
-          {projects.map((p, i) => (
-            <figure
-              key={p.title}
-              className="mb-6 break-inside-avoid group cursor-pointer"
-            >
-              <div className="relative overflow-hidden rounded-md bg-muted">
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  width={p.w}
-                  height={p.h}
-                  loading={i < 2 ? "eager" : "lazy"}
-                  className="w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                />
-                <div className="absolute inset-0 bg-forest/0 group-hover:bg-forest/10 transition-colors duration-500" />
-              </div>
-              <figcaption className="mt-3 flex items-baseline justify-between gap-4">
-                <div>
-                  <h3 className="text-display text-xl text-forest">{p.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{p.category}</p>
-                </div>
-                <span className="text-xs text-muted-foreground tabular-nums">{p.year}</span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
-      {/* About */}
-      <section id="about" className="bg-secondary/40 border-y border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-20 md:py-28 grid md:grid-cols-12 gap-10 items-center">
           <div className="md:col-span-5">
-            <div className="overflow-hidden rounded-md bg-muted">
+            <div className="aspect-[4/5] overflow-hidden bg-muted">
               <img
-                src={portrait}
-                alt="Retrato da designer no estúdio"
-                width={1024}
-                height={1280}
-                loading="lazy"
-                className="w-full h-auto"
+                src={work1}
+                alt="Ilustração em destaque"
+                className="w-full h-full object-cover"
+                loading="eager"
               />
             </div>
           </div>
-          <div className="md:col-span-7 md:pl-8">
-            <p className="eyebrow text-moss">Sobre</p>
-            <h2 className="text-display text-4xl md:text-6xl text-forest mt-4">
-              Minha história.
-            </h2>
-            <p className="mt-6 text-base md:text-lg text-muted-foreground leading-relaxed">
-              Minha jornada com a arte começou ainda na infância, quando fazia comissões no Orkut
-              e capas para Facebook, foi ali que nasceu minha vontade de explorar o design de
-              verdade. Sou formada em Design de Animação, com experiência que vai do Design Gráfico
-              à Ilustração. Hoje, estou me especializando em Design iGaming, unindo tudo o que
-              aprendi na faculdade com cursos focados na área, e vivendo minha primeira experiência
-              atuando nesse mercado, sempre buscando expandir meu repertório através de novos cursos
-              e desafios.
+        </div>
+        <div className="mt-20 flex items-center gap-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
+          <span className="h-px w-10 bg-border" />
+          {t.hero.scroll}
+        </div>
+      </section>
+
+      {/* Intro */}
+      <section className="border-t border-border/60">
+        <div className="mx-auto max-w-[1100px] px-6 md:px-10 py-24 md:py-36">
+          <Reveal>
+            <p className="eyebrow text-muted-foreground">{t.intro.eyebrow}</p>
+            <p className="mt-8 text-2xl md:text-4xl leading-[1.35] text-foreground font-serif">
+              {t.intro.body}
             </p>
-            <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-border pt-8">
-              <div>
-                <dt className="text-xs text-muted-foreground">Anos</dt>
-                <dd className="text-display text-3xl text-forest mt-1">06</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted-foreground">Projetos</dt>
-                <dd className="text-display text-3xl text-forest mt-1">40+</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted-foreground">Clientes</dt>
-                <dd className="text-display text-3xl text-forest mt-1">22</dd>
-              </div>
-            </dl>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Illustration */}
+      <section id="illustration" className="border-t border-border/60">
+        <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-24 md:py-32">
+          <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
+            <div>
+              <p className="eyebrow text-muted-foreground">{t.illu.eyebrow}</p>
+              <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4">{t.illu.title}</h2>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-xs">{t.illu.desc}</p>
+          </Reveal>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {illustrations.map((src, i) => (
+              <Reveal key={i}>
+                <figure className="group overflow-hidden bg-muted aspect-[3/4]">
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  />
+                </figure>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Services */}
-      <section id="services" className="mx-auto max-w-[1400px] px-6 md:px-10 py-20 md:py-28">
-        <p className="eyebrow text-moss">Serviços</p>
-        <h2 className="text-display text-4xl md:text-6xl text-forest mt-3 max-w-3xl">
-          O que posso <span className="italic">cultivar</span> para você.
-        </h2>
-
-        <div className="mt-14 divide-y divide-border border-y border-border">
-          {[
-            { n: "01", t: "Identidade Visual", d: "Logotipos, sistemas visuais e diretrizes de marca com longevidade." },
-            { n: "02", t: "Design Editorial", d: "Livros, revistas, relatórios e materiais impressos com atenção tipográfica." },
-            { n: "03", t: "Produto Digital", d: "Interfaces limpas para web e mobile, do wireframe ao design system." },
-            { n: "04", t: "Direção de Arte", d: "Campanhas, ensaios e narrativas visuais para marcas conscientes." },
-          ].map((s) => (
-            <div key={s.n} className="grid grid-cols-12 gap-6 py-8 group hover:bg-accent/40 transition-colors px-2 -mx-2 rounded">
-              <div className="col-span-2 md:col-span-1 eyebrow text-moss">{s.n}</div>
-              <h3 className="col-span-10 md:col-span-4 text-display text-2xl md:text-3xl text-forest">
-                {s.t}
-              </h3>
-              <p className="col-span-12 md:col-span-7 text-muted-foreground md:pl-8">{s.d}</p>
+      {/* Social Media */}
+      <section id="social" className="border-t border-border/60 bg-secondary/40">
+        <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-24 md:py-32">
+          <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
+            <div>
+              <p className="eyebrow text-muted-foreground">{t.social.eyebrow}</p>
+              <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4">{t.social.title}</h2>
             </div>
-          ))}
+            <p className="text-sm text-muted-foreground max-w-xs">{t.social.desc}</p>
+          </Reveal>
+
+          <div className="grid md:grid-cols-12 gap-6 md:gap-8">
+            {/* Feed mockup */}
+            <Reveal className="md:col-span-7">
+              <p className="eyebrow text-muted-foreground mb-3">{t.social.feed}</p>
+              <div className="bg-background border border-border/70 p-4 md:p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-full bg-muted" />
+                  <div>
+                    <p className="text-xs font-medium text-foreground">tais.artwork</p>
+                    <p className="text-[10px] text-muted-foreground">São Paulo · BR</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-1">
+                  {[work4, work5, work2, work1, work3, work6].map((src, i) => (
+                    <div key={i} className="aspect-square overflow-hidden bg-muted">
+                      <img src={src} alt="" loading="lazy" className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Stories mockup */}
+            <Reveal className="md:col-span-5">
+              <p className="eyebrow text-muted-foreground mb-3">{t.social.story}</p>
+              <div className="flex gap-4 justify-center md:justify-start">
+                {[socialPieces[0], socialPieces[1]].map((src, i) => (
+                  <div
+                    key={i}
+                    className="w-[46%] max-w-[220px] aspect-[9/16] rounded-2xl overflow-hidden bg-background border border-border/70 shadow-sm"
+                  >
+                    <img src={src} alt="" loading="lazy" className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* iGaming */}
+      <section id="igaming" className="border-t border-border/60">
+        <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-24 md:py-32">
+          <Reveal className="mb-16">
+            <p className="eyebrow text-muted-foreground">{t.igaming.eyebrow}</p>
+            <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4">{t.igaming.title}</h2>
+          </Reveal>
+          <div className="space-y-16 md:space-y-24">
+            {t.igaming.cases.map((c, i) => (
+              <Reveal key={i}>
+                <article className="grid md:grid-cols-12 gap-8 md:gap-12 items-center">
+                  <div className={`md:col-span-7 ${i % 2 === 1 ? "md:order-2" : ""}`}>
+                    <div className="aspect-[4/3] overflow-hidden bg-muted">
+                      <img
+                        src={igamingImages[i]}
+                        alt={c.brand}
+                        loading="lazy"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <div className={`md:col-span-5 ${i % 2 === 1 ? "md:order-1" : ""}`}>
+                    <p className="eyebrow text-muted-foreground">0{i + 1}</p>
+                    <h3 className="text-display text-3xl md:text-4xl text-foreground mt-3">{c.brand}</h3>
+                    <p className="mt-5 text-base text-muted-foreground leading-relaxed">{c.goal}</p>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Contact */}
-      <section id="contact" className="bg-forest text-cream">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-24 md:py-36">
-          <p className="eyebrow text-sage">Contato</p>
-          <h2 className="text-display text-5xl md:text-8xl mt-6 leading-[0.95]">
-            Vamos plantar <br />
-            algo <span className="italic text-sage">juntos</span>?
-          </h2>
-          <div className="mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-            <a
-              href="mailto:ola@estudioverde.com"
-              className="text-display text-2xl md:text-4xl underline underline-offset-8 decoration-sage/40 hover:decoration-sage transition"
-            >
-              ola@estudioverde.com
-            </a>
-            <div className="flex gap-6 text-sm text-sage">
-              <a href="#" className="hover:text-cream">Instagram</a>
-              <a href="#" className="hover:text-cream">Behance</a>
-              <a href="#" className="hover:text-cream">LinkedIn</a>
+      <section id="contact" className="border-t border-border/60 bg-foreground text-background">
+        <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-28 md:py-40">
+          <Reveal>
+            <p className="eyebrow opacity-60">{t.contact.eyebrow}</p>
+            <h2 className="text-display text-5xl md:text-8xl mt-6 leading-[0.95]">
+              {t.contact.title1} <br />
+              <span className="italic opacity-80">{t.contact.title2}</span>
+            </h2>
+            <div className="mt-14 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+              <a
+                href={`mailto:${t.contact.email}`}
+                className="text-display text-2xl md:text-4xl underline underline-offset-8 decoration-background/30 hover:decoration-background transition"
+              >
+                {t.contact.email}
+              </a>
+              <div className="flex gap-6 text-sm opacity-70">
+                <a href="#" className="hover:opacity-100">{t.contact.social.ig}</a>
+                <a href="#" className="hover:opacity-100">{t.contact.social.be}</a>
+                <a href="#" className="hover:opacity-100">{t.contact.social.ln}</a>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
-        <div className="border-t border-cream/10">
-          <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-sage">
-            <p>© 2026 Estúdio Verde. Todos os direitos reservados.</p>
-            <p>Feito com calma em São Paulo · BR</p>
+        <div className="border-t border-background/10">
+          <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-6 text-[11px] tracking-[0.18em] uppercase opacity-60">
+            {t.contact.footer}
           </div>
         </div>
       </section>

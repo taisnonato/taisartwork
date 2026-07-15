@@ -75,16 +75,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Estúdio Verde — Portfólio de Design" },
+      { title: "Tais Artwork — Ilustração, Social Media & iGaming" },
       {
         name: "description",
         content:
-          "Portfólio de design editorial e identidade visual. Projetos de branding, digital e direção de arte com tons verdes e tipografia serifada.",
+          "Portfólio de Tais Artwork: ilustração autoral, design para social media e design para iGaming. Um sistema visual coeso para marcas que valorizam narrativa e detalhe.",
       },
-      { property: "og:title", content: "Estúdio Verde — Portfólio de Design" },
+      { property: "og:title", content: "Tais Artwork — Ilustração, Social Media & iGaming" },
       {
         property: "og:description",
-        content: "Branding, digital e direção de arte. Um portfólio editorial em tons verdes.",
+        content: "Ilustração autoral, social media e iGaming — portfólio minimalista de Tais Artwork.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap",
       },
     ],
   }),
