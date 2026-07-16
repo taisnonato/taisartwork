@@ -236,7 +236,7 @@ function Index() {
                   }`}
                   aria-label={`Switch language to ${l.toUpperCase()}`}
                 >
-                  {l}
+                  {l.toUpperCase()}
                 </button>
               </span>
             ))}
