@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Globe } from "lucide-react";
 import work1 from "@/assets/work-1.jpg";
 import work2 from "@/assets/work-2.jpg";
 import work3 from "@/assets/work-3.jpg";
@@ -225,7 +226,9 @@ function Index() {
             <a href="#igaming" className="hover:text-foreground transition-colors">{t.nav.igaming}</a>
             <a href="#contact" className="hover:text-foreground transition-colors">{t.nav.contact}</a>
           </nav>
-          <div className="flex items-center gap-1 text-[11px] tracking-[0.16em] uppercase text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-[11px] tracking-[0.16em] uppercase text-muted-foreground">
+            <Globe className="w-3.5 h-3.5 opacity-70" aria-hidden="true" />
+
             {(["pt", "en", "es"] as Lang[]).map((l, i) => (
               <span key={l} className="flex items-center">
                 {i > 0 && <span className="mx-1.5 opacity-40">/</span>}
