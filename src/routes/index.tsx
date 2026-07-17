@@ -423,7 +423,7 @@ function Index() {
               </a>
               <div className="flex gap-6 text-sm opacity-70">
                 <a href="https://www.instagram.com/taisartwork" target="_blank" rel="noopener noreferrer" className="hover:opacity-100">{t.contact.social.ig}</a>
-                <a href="#" className="hover:opacity-100">{t.contact.social.be}</a>
+                <a href="https://www.behance.net/taisnonato" target="_blank" rel="noopener noreferrer" className="hover:opacity-100">{t.contact.social.be}</a>
                 <a href="https://www.linkedin.com/in/tais-macedo-306984124/" target="_blank" rel="noopener noreferrer" className="hover:opacity-100">{t.contact.social.ln}</a>
               </div>
             </div>
