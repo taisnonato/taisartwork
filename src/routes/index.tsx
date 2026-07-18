@@ -8,7 +8,11 @@ import work4 from "@/assets/work-4.jpg";
 import work5 from "@/assets/work-5.jpg";
 import work6 from "@/assets/work-6.jpg";
 import portraitAsset from "@/assets/portrait-tais.png.asset.json";
+import catImageAsset from "@/assets/cat.jpg.asset.json";
+import catVideoAsset from "@/assets/cat.mp4.asset.json";
 const portrait = portraitAsset.url;
+const catImage = catImageAsset.url;
+const catVideo = catVideoAsset.url;
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -307,14 +311,43 @@ function Index() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {illustrations.map((src, i) => (
               <Reveal key={i}>
-                <figure className="group overflow-hidden bg-muted aspect-[3/4]">
-                  <img
-                    src={src}
-                    alt=""
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  />
-                </figure>
+                {i === 0 ? (
+                  <figure
+                    className="group relative overflow-hidden bg-muted aspect-[3/4]"
+                    onMouseEnter={(e) => {
+                      const v = e.currentTarget.querySelector("video");
+                      if (v) v.play().catch(() => {});
+                    }}
+                    onMouseLeave={(e) => {
+                      const v = e.currentTarget.querySelector("video");
+                      if (v) { v.pause(); v.currentTime = 0; }
+                    }}
+                  >
+                    <img
+                      src={catImage}
+                      alt="Ilustração autoral — gato"
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+                    />
+                    <video
+                      src={catVideo}
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    />
+                  </figure>
+                ) : (
+                  <figure className="group overflow-hidden bg-muted aspect-[3/4]">
+                    <img
+                      src={src}
+                      alt=""
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    />
+                  </figure>
+                )}
               </Reveal>
             ))}
           </div>
