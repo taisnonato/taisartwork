@@ -304,7 +304,7 @@ function Index() {
           <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
             <div>
               <p className="eyebrow text-muted-foreground">{t.illu.eyebrow}</p>
-              <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4">{t.illu.title}</h2>
+              <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4"><span className="italic text-accent-ink">{t.illu.title.replace(/\.$/, "")}</span>.</h2>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">{t.illu.desc}</p>
           </Reveal>
@@ -360,7 +360,7 @@ function Index() {
           <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
             <div>
               <p className="eyebrow text-muted-foreground">{t.social.eyebrow}</p>
-              <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4">{t.social.title}</h2>
+              <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4"><span className="italic text-accent-ink">{t.social.title.replace(/\.$/, "")}</span>.</h2>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">{t.social.desc}</p>
           </Reveal>
@@ -410,7 +410,7 @@ function Index() {
         <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-24 md:py-32">
           <Reveal className="mb-16">
             <p className="eyebrow text-muted-foreground">{t.igaming.eyebrow}</p>
-            <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4">{t.igaming.title}</h2>
+            <h2 className="text-display text-4xl md:text-6xl text-foreground mt-4"><span className="italic text-accent-ink">{t.igaming.title.replace(/\.$/, "")}</span>.</h2>
           </Reveal>
           <div className="space-y-16 md:space-y-24">
             {t.igaming.cases.map((c, i) => (
