@@ -9,8 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IllustrationRouteImport } from './routes/illustration'
+import { Route as IgamingRouteImport } from './routes/igaming'
 import { Route as IndexRouteImport } from './routes/index'
 
+const IllustrationRoute = IllustrationRouteImport.update({
+  id: '/illustration',
+  path: '/illustration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IgamingRoute = IgamingRouteImport.update({
+  id: '/igaming',
+  path: '/igaming',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +31,50 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/igaming': typeof IgamingRoute
+  '/illustration': typeof IllustrationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/igaming': typeof IgamingRoute
+  '/illustration': typeof IllustrationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/igaming': typeof IgamingRoute
+  '/illustration': typeof IllustrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/igaming' | '/illustration'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/igaming' | '/illustration'
+  id: '__root__' | '/' | '/igaming' | '/illustration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  IgamingRoute: typeof IgamingRoute
+  IllustrationRoute: typeof IllustrationRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/illustration': {
+      id: '/illustration'
+      path: '/illustration'
+      fullPath: '/illustration'
+      preLoaderRoute: typeof IllustrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/igaming': {
+      id: '/igaming'
+      path: '/igaming'
+      fullPath: '/igaming'
+      preLoaderRoute: typeof IgamingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +87,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  IgamingRoute: IgamingRoute,
+  IllustrationRoute: IllustrationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
