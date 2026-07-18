@@ -8,7 +8,11 @@ import work4 from "@/assets/work-4.jpg";
 import work5 from "@/assets/work-5.jpg";
 import work6 from "@/assets/work-6.jpg";
 import portraitAsset from "@/assets/portrait-tais.png.asset.json";
+import catImageAsset from "@/assets/cat.jpg.asset.json";
+import catVideoAsset from "@/assets/cat.mp4.asset.json";
 const portrait = portraitAsset.url;
+const catImage = catImageAsset.url;
+const catVideo = catVideoAsset.url;
 
 export const Route = createFileRoute("/")({
   component: Index,
