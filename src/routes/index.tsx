@@ -10,9 +10,20 @@ import work6 from "@/assets/work-6.jpg";
 import portraitAsset from "@/assets/portrait-tais.png.asset.json";
 import catImageAsset from "@/assets/cat.jpg.asset.json";
 import catVideoAsset from "@/assets/cat.mp4.asset.json";
+import yukakoAsset from "@/assets/illu-yukako.jpg.asset.json";
+import monalisaAsset from "@/assets/illu-monalisa.jpg.asset.json";
+import butterflyAsset from "@/assets/illu-butterfly.jpg.asset.json";
+import meganAsset from "@/assets/illu-megan.jpg.asset.json";
 const portrait = portraitAsset.url;
 const catImage = catImageAsset.url;
 const catVideo = catVideoAsset.url;
+const illustrationSlides = [
+  { type: "video" as const, image: catImage, video: catVideo, alt: "Ilustração autoral — gato" },
+  { type: "image" as const, src: yukakoAsset.url, alt: "Yukako" },
+  { type: "image" as const, src: monalisaAsset.url, alt: "Monalisa Hollywood" },
+  { type: "image" as const, src: butterflyAsset.url, alt: "Borboletas" },
+  { type: "image" as const, src: meganAsset.url, alt: "Megan" },
+];
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -212,6 +223,95 @@ function Reveal({ children, className = "" }: { children: ReactNode; className?:
   );
 }
 
+type Slide =
+  | { type: "video"; image: string; video: string; alt: string }
+  | { type: "image"; src: string; alt: string };
+
+function IllustrationScroller({ slides }: { slides: Slide[] }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [translate, setTranslate] = useState(0);
+  const [wrapperHeight, setWrapperHeight] = useState("100vh");
+
+  useEffect(() => {
+    const update = () => {
+      const wrapper = wrapperRef.current;
+      const track = trackRef.current;
+      if (!wrapper || !track) return;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const distance = Math.max(0, track.scrollWidth - vw);
+      setWrapperHeight(`${vh + distance}px`);
+      const rect = wrapper.getBoundingClientRect();
+      const scrolled = Math.min(Math.max(-rect.top, 0), distance);
+      setTranslate(scrolled);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    const ro = new ResizeObserver(update);
+    if (trackRef.current) ro.observe(trackRef.current);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      ro.disconnect();
+    };
+  }, [slides.length]);
+
+  return (
+    <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+        <div
+          ref={trackRef}
+          style={{ transform: `translate3d(${-translate}px, 0, 0)` }}
+          className="flex items-center gap-4 md:gap-6 px-6 md:px-10 will-change-transform"
+        >
+          {slides.map((s, i) =>
+            s.type === "video" ? (
+              <figure
+                key={i}
+                className="group relative overflow-hidden bg-muted h-[60vh] md:h-[70vh] max-h-[640px] aspect-[3/4] shrink-0"
+                onMouseEnter={(e) => {
+                  const v = e.currentTarget.querySelector("video");
+                  if (v) v.play().catch(() => {});
+                }}
+                onMouseLeave={(e) => {
+                  const v = e.currentTarget.querySelector("video");
+                  if (v) { v.pause(); v.currentTime = 0; }
+                }}
+              >
+                <img
+                  src={s.image}
+                  alt={s.alt}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+                />
+                <video
+                  src={s.video}
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                />
+              </figure>
+            ) : (
+              <figure key={i} className="h-[60vh] md:h-[70vh] max-h-[640px] shrink-0 bg-muted">
+                <img
+                  src={s.src}
+                  alt={s.alt}
+                  loading="lazy"
+                  className="h-full w-auto block"
+                />
+              </figure>
+            )
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Index() {
   const [lang, setLang] = useState<Lang>("pt");
   const t = dict[lang];
@@ -300,7 +400,7 @@ function Index() {
 
       {/* Illustration */}
       <section id="illustration" className="border-t border-border/60">
-        <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-24 md:py-32">
+        <div className="mx-auto max-w-[1300px] px-6 md:px-10 pt-24 md:pt-32">
           <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
             <div>
               <p className="eyebrow text-muted-foreground">{t.illu.eyebrow}</p>
@@ -308,50 +408,8 @@ function Index() {
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">{t.illu.desc}</p>
           </Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {illustrations.map((src, i) => (
-              <Reveal key={i}>
-                {i === 0 ? (
-                  <figure
-                    className="group relative overflow-hidden bg-muted aspect-[3/4]"
-                    onMouseEnter={(e) => {
-                      const v = e.currentTarget.querySelector("video");
-                      if (v) v.play().catch(() => {});
-                    }}
-                    onMouseLeave={(e) => {
-                      const v = e.currentTarget.querySelector("video");
-                      if (v) { v.pause(); v.currentTime = 0; }
-                    }}
-                  >
-                    <img
-                      src={catImage}
-                      alt="Ilustração autoral — gato"
-                      loading="lazy"
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-                    />
-                    <video
-                      src={catVideo}
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    />
-                  </figure>
-                ) : (
-                  <figure className="group overflow-hidden bg-muted aspect-[3/4]">
-                    <img
-                      src={src}
-                      alt=""
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                    />
-                  </figure>
-                )}
-              </Reveal>
-            ))}
-          </div>
         </div>
+        <IllustrationScroller slides={illustrationSlides} />
       </section>
 
       {/* Social Media */}
