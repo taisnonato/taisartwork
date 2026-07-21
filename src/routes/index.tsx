@@ -270,7 +270,7 @@ function IllustrationScroller({ slides }: { slides: Slide[] }) {
             s.type === "video" ? (
               <figure
                 key={i}
-                className="group relative overflow-hidden bg-muted h-[60vh] md:h-[70vh] max-h-[640px] aspect-[3/4] shrink-0"
+                className="group relative overflow-hidden bg-muted h-[60vh] md:h-[70vh] max-h-[640px] shrink-0"
                 onMouseEnter={(e) => {
                   const v = e.currentTarget.querySelector("video");
                   if (v) v.play().catch(() => {});
@@ -284,7 +284,7 @@ function IllustrationScroller({ slides }: { slides: Slide[] }) {
                   src={s.image}
                   alt={s.alt}
                   loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+                  className="h-full w-auto block transition-opacity duration-300 group-hover:opacity-0"
                 />
                 <video
                   src={s.video}
@@ -292,7 +292,7 @@ function IllustrationScroller({ slides }: { slides: Slide[] }) {
                   loop
                   playsInline
                   preload="metadata"
-                  className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 />
               </figure>
             ) : (
