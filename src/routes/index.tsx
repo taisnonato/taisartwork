@@ -10,9 +10,20 @@ import work6 from "@/assets/work-6.jpg";
 import portraitAsset from "@/assets/portrait-tais.png.asset.json";
 import catImageAsset from "@/assets/cat.jpg.asset.json";
 import catVideoAsset from "@/assets/cat.mp4.asset.json";
+import yukakoAsset from "@/assets/illu-yukako.jpg.asset.json";
+import monalisaAsset from "@/assets/illu-monalisa.jpg.asset.json";
+import butterflyAsset from "@/assets/illu-butterfly.jpg.asset.json";
+import meganAsset from "@/assets/illu-megan.jpg.asset.json";
 const portrait = portraitAsset.url;
 const catImage = catImageAsset.url;
 const catVideo = catVideoAsset.url;
+const illustrationSlides = [
+  { type: "video" as const, image: catImage, video: catVideo, alt: "Ilustração autoral — gato" },
+  { type: "image" as const, src: yukakoAsset.url, alt: "Yukako" },
+  { type: "image" as const, src: monalisaAsset.url, alt: "Monalisa Hollywood" },
+  { type: "image" as const, src: butterflyAsset.url, alt: "Borboletas" },
+  { type: "image" as const, src: meganAsset.url, alt: "Megan" },
+];
 
 export const Route = createFileRoute("/")({
   component: Index,
