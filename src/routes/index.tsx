@@ -400,7 +400,7 @@ function Index() {
 
       {/* Illustration */}
       <section id="illustration" className="border-t border-border/60">
-        <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-24 md:py-32">
+        <div className="mx-auto max-w-[1300px] px-6 md:px-10 pt-24 md:pt-32">
           <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
             <div>
               <p className="eyebrow text-muted-foreground">{t.illu.eyebrow}</p>
@@ -408,50 +408,8 @@ function Index() {
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">{t.illu.desc}</p>
           </Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {illustrations.map((src, i) => (
-              <Reveal key={i}>
-                {i === 0 ? (
-                  <figure
-                    className="group relative overflow-hidden bg-muted aspect-[3/4]"
-                    onMouseEnter={(e) => {
-                      const v = e.currentTarget.querySelector("video");
-                      if (v) v.play().catch(() => {});
-                    }}
-                    onMouseLeave={(e) => {
-                      const v = e.currentTarget.querySelector("video");
-                      if (v) { v.pause(); v.currentTime = 0; }
-                    }}
-                  >
-                    <img
-                      src={catImage}
-                      alt="Ilustração autoral — gato"
-                      loading="lazy"
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-                    />
-                    <video
-                      src={catVideo}
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    />
-                  </figure>
-                ) : (
-                  <figure className="group overflow-hidden bg-muted aspect-[3/4]">
-                    <img
-                      src={src}
-                      alt=""
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                    />
-                  </figure>
-                )}
-              </Reveal>
-            ))}
-          </div>
         </div>
+        <IllustrationScroller slides={illustrationSlides} />
       </section>
 
       {/* Social Media */}
