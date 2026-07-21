@@ -106,3 +106,8 @@
   text-transform: uppercase;
   font-weight: 500;
 }
+
+@keyframes illo-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(var(--illo-distance, 0), 0, 0); }
+}
