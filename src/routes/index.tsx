@@ -223,6 +223,95 @@ function Reveal({ children, className = "" }: { children: ReactNode; className?:
   );
 }
 
+type Slide =
+  | { type: "video"; image: string; video: string; alt: string }
+  | { type: "image"; src: string; alt: string };
+
+function IllustrationScroller({ slides }: { slides: Slide[] }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [translate, setTranslate] = useState(0);
+  const [wrapperHeight, setWrapperHeight] = useState("100vh");
+
+  useEffect(() => {
+    const update = () => {
+      const wrapper = wrapperRef.current;
+      const track = trackRef.current;
+      if (!wrapper || !track) return;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const distance = Math.max(0, track.scrollWidth - vw);
+      setWrapperHeight(`${vh + distance}px`);
+      const rect = wrapper.getBoundingClientRect();
+      const scrolled = Math.min(Math.max(-rect.top, 0), distance);
+      setTranslate(scrolled);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    const ro = new ResizeObserver(update);
+    if (trackRef.current) ro.observe(trackRef.current);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      ro.disconnect();
+    };
+  }, [slides.length]);
+
+  return (
+    <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+        <div
+          ref={trackRef}
+          style={{ transform: `translate3d(${-translate}px, 0, 0)` }}
+          className="flex items-center gap-4 md:gap-6 px-6 md:px-10 will-change-transform"
+        >
+          {slides.map((s, i) =>
+            s.type === "video" ? (
+              <figure
+                key={i}
+                className="group relative overflow-hidden bg-muted h-[60vh] md:h-[70vh] max-h-[640px] aspect-[3/4] shrink-0"
+                onMouseEnter={(e) => {
+                  const v = e.currentTarget.querySelector("video");
+                  if (v) v.play().catch(() => {});
+                }}
+                onMouseLeave={(e) => {
+                  const v = e.currentTarget.querySelector("video");
+                  if (v) { v.pause(); v.currentTime = 0; }
+                }}
+              >
+                <img
+                  src={s.image}
+                  alt={s.alt}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+                />
+                <video
+                  src={s.video}
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                />
+              </figure>
+            ) : (
+              <figure key={i} className="h-[60vh] md:h-[70vh] max-h-[640px] shrink-0 bg-muted">
+                <img
+                  src={s.src}
+                  alt={s.alt}
+                  loading="lazy"
+                  className="h-full w-auto block"
+                />
+              </figure>
+            )
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Index() {
   const [lang, setLang] = useState<Lang>("pt");
   const t = dict[lang];
