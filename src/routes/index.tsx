@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Globe } from "lucide-react";
+import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
+import { Check, Copy, Globe, Instagram } from "lucide-react";
 import work1 from "@/assets/work-1.jpg";
 import work2 from "@/assets/work-2.jpg";
 import work3 from "@/assets/work-3.jpg";
@@ -8,21 +8,22 @@ import work4 from "@/assets/work-4.jpg";
 import work5 from "@/assets/work-5.jpg";
 import work6 from "@/assets/work-6.jpg";
 import portraitAsset from "@/assets/portrait-tais.png.asset.json";
-import catImageAsset from "@/assets/cat.jpg.asset.json";
-import catVideoAsset from "@/assets/cat.mp4.asset.json";
-import yukakoAsset from "@/assets/illu-yukako.jpg.asset.json";
-import monalisaAsset from "@/assets/illu-monalisa.jpg.asset.json";
-import butterflyAsset from "@/assets/illu-butterfly.jpg.asset.json";
-import meganAsset from "@/assets/illu-megan.jpg.asset.json";
+import illustrationMegan from "@/assets/illustration-megan.gif";
+import illustrationCat from "@/assets/illustration-cat.gif";
+import illustrationYukako from "@/assets/illustration-yukako.png";
+import illustrationPearls from "@/assets/illustration-pearls.png";
+import illustrationButterfly from "@/assets/illustration-butterfly.png";
+import illustrationHands from "@/assets/illustration-hands.png";
+import illustrationMonalisa from "@/assets/illustration-monalisa.png";
 const portrait = portraitAsset.url;
-const catImage = catImageAsset.url;
-const catVideo = catVideoAsset.url;
 const illustrationSlides = [
-  { type: "video" as const, image: catImage, video: catVideo, alt: "Ilustração autoral — gato" },
-  { type: "image" as const, src: yukakoAsset.url, alt: "Yukako" },
-  { type: "image" as const, src: monalisaAsset.url, alt: "Monalisa Hollywood" },
-  { type: "image" as const, src: butterflyAsset.url, alt: "Borboletas" },
-  { type: "image" as const, src: meganAsset.url, alt: "Megan" },
+  { src: illustrationButterfly, alt: "Ilustração autoral — borboletas" },
+  { src: illustrationMegan, alt: "Ilustração autoral — Megan" },
+  { src: illustrationHands, alt: "Ilustração autoral — mãos" },
+  { src: illustrationCat, alt: "Ilustração autoral — gato", imageClassName: "scale-[1.18] -translate-x-1" },
+  { src: illustrationMonalisa, alt: "Ilustração autoral — Monalisa Hollywood" },
+  { src: illustrationPearls, alt: "Ilustração autoral — garota com pérolas" },
+  { src: illustrationYukako, alt: "Ilustração autoral — Yukako" },
 ];
 
 export const Route = createFileRoute("/")({
@@ -76,9 +77,12 @@ const dict = {
     },
     contact: {
       eyebrow: "Contato",
+      available: "Aberta a vagas sênior, colaborações e ótimas conversas.",
       title1: "Vamos criar",
       title2: "algo juntos?",
       email: "taiscapinan@gmail.com",
+      alsoFind: "Também me encontre em",
+      copied: "Copiado",
       social: { ig: "Instagram", be: "Behance", ln: "LinkedIn" },
       footer: "© 2026 Tais Artwork · Feito com calma",
     },
@@ -127,9 +131,12 @@ const dict = {
     },
     contact: {
       eyebrow: "Contact",
+      available: "Open to senior roles, collaborations, and great conversations.",
       title1: "Let's make",
       title2: "something together?",
       email: "taiscapinan@gmail.com",
+      alsoFind: "Also find me on",
+      copied: "Copied",
       social: { ig: "Instagram", be: "Behance", ln: "LinkedIn" },
       footer: "© 2026 Tais Artwork · Made with care",
     },
@@ -178,9 +185,12 @@ const dict = {
     },
     contact: {
       eyebrow: "Contacto",
-      title1: "¿Creamos algo",
-      title2: "juntos?",
+      available: "Abierta a roles senior, colaboraciones y grandes conversaciones.",
+      title1: "¿Creamos",
+      title2: "algo juntos?",
       email: "taiscapinan@gmail.com",
+      alsoFind: "También encuéntrame en",
+      copied: "Copiado",
       social: { ig: "Instagram", be: "Behance", ln: "LinkedIn" },
       footer: "© 2026 Tais Artwork · Hecho con calma",
     },
@@ -223,104 +233,19 @@ function Reveal({ children, className = "" }: { children: ReactNode; className?:
   );
 }
 
-type Slide =
-  | { type: "video"; image: string; video: string; alt: string }
-  | { type: "image"; src: string; alt: string };
+type Slide = { src: string; alt: string; imageClassName?: string };
 
 function IllustrationScroller({ slides }: { slides: Slide[] }) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [distance, setDistance] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    const update = () => {
-      const wrapper = wrapperRef.current;
-      const track = trackRef.current;
-      if (!wrapper || !track) return;
-      const d = Math.max(0, track.scrollWidth - wrapper.clientWidth);
-      setDistance(d);
-    };
-    update();
-    window.addEventListener("resize", update);
-    const ro = new ResizeObserver(update);
-    if (trackRef.current) ro.observe(trackRef.current);
-    return () => {
-      window.removeEventListener("resize", update);
-      ro.disconnect();
-    };
-  }, [slides.length]);
-
-  useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setPlaying(true);
-      },
-      { threshold: 0.25 }
-    );
-    io.observe(wrapper);
-    return () => io.disconnect();
-  }, []);
-
-  const duration = Math.max(12, Math.round(distance / 60));
+  const marqueeSlides = [...slides, ...slides];
 
   return (
-    <div ref={wrapperRef} className="relative overflow-hidden">
-      <div
-        ref={trackRef}
-        className="flex items-center gap-4 md:gap-6 px-6 md:px-10 will-change-transform"
-        style={{
-          animation: playing && distance > 0 ? `illo-scroll ${duration}s linear forwards` : undefined,
-          animationPlayState: paused ? "paused" : "running",
-          // @ts-expect-error css var
-          "--illo-distance": `-${distance}px`,
-        }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        {slides.map((s, i) =>
-          s.type === "video" ? (
-            <figure
-              key={i}
-              className="group relative overflow-hidden rounded-2xl bg-muted h-[60vh] md:h-[70vh] max-h-[640px] shrink-0"
-              onMouseEnter={(e) => {
-                const v = e.currentTarget.querySelector("video");
-                if (v) v.play().catch(() => {});
-              }}
-              onMouseLeave={(e) => {
-                const v = e.currentTarget.querySelector("video");
-                if (v) { v.pause(); v.currentTime = 0; }
-              }}
-            >
-              <img
-                src={s.image}
-                alt={s.alt}
-                loading="lazy"
-                className="h-full w-auto block transition-opacity duration-300 group-hover:opacity-0"
-              />
-              <video
-                src={s.video}
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-              />
-            </figure>
-          ) : (
-            <figure key={i} className="h-[60vh] md:h-[70vh] max-h-[640px] shrink-0 bg-muted rounded-2xl overflow-hidden">
-              <img
-                src={s.src}
-                alt={s.alt}
-                loading="lazy"
-                className="h-full w-auto block"
-              />
-            </figure>
-          )
-        )}
+    <div className="relative overflow-hidden">
+      <div className="illustration-marquee flex w-max items-center gap-3 md:gap-4 px-4 md:px-6 will-change-transform">
+        {marqueeSlides.map((s, i) => (
+          <figure key={`${s.alt}-${i}`} className="h-[46vh] md:h-[56vh] max-h-[520px] shrink-0 overflow-hidden rounded-xl bg-muted">
+            <img src={s.src} alt={s.alt} loading="lazy" className={`h-full w-auto block ${s.imageClassName ?? ""}`} />
+          </figure>
+        ))}
       </div>
     </div>
   );
@@ -328,7 +253,20 @@ function IllustrationScroller({ slides }: { slides: Slide[] }) {
 
 function Index() {
   const [lang, setLang] = useState<Lang>("pt");
+  const [copied, setCopied] = useState(false);
+  const [copyBurstKey, setCopyBurstKey] = useState(0);
   const t = dict[lang];
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(t.contact.email);
+      setCopyBurstKey((key) => key + 1);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground scroll-smooth">
@@ -345,28 +283,28 @@ function Index() {
             <a href="#contact" className="hover:text-foreground transition-colors">{t.nav.contact}</a>
           </nav>
           <div className="flex items-center gap-1.5 text-[11px] tracking-[0.16em] uppercase text-muted-foreground">
-            <Globe className="w-3.5 h-3.5 opacity-70" aria-hidden="true" />
+            <Globe className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden="true" />
 
             {(["pt", "en", "es"] as Lang[]).map((l, i) => (
-              <span key={l} className="flex items-center">
-                {i > 0 && <span className="mx-1.5 opacity-40">/</span>}
+              <Fragment key={l}>
+                {i > 0 && <span className="opacity-40">/</span>}
                 <button
                   onClick={() => setLang(l)}
-                  className={`transition-colors ${
-                    lang === l ? "text-foreground font-medium" : "hover:text-foreground"
+                  className={`min-w-[2ch] text-center leading-none transition-colors ${
+                    lang === l ? "text-accent-ink font-[900]" : "hover:text-foreground"
                   }`}
                   aria-label={`Switch language to ${l.toUpperCase()}`}
                 >
                   {l.toUpperCase()}
                 </button>
-              </span>
+              </Fragment>
             ))}
           </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section id="top" className="mx-auto max-w-[1300px] px-6 md:px-10 pt-36 md:pt-44 pb-24 md:pb-32">
+      <section id="top" className="hero-dot-bg mx-auto max-w-[1300px] px-6 md:px-10 pt-36 md:pt-44 pb-24 md:pb-32">
         <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-end">
           <div className="md:col-span-7">
             <p className="eyebrow text-muted-foreground">{t.hero.role}</p>
@@ -427,7 +365,7 @@ function Index() {
       </section>
 
       {/* Social Media */}
-      <section id="social" className="border-t border-border/60 bg-secondary/40">
+      <section id="social" className="bg-secondary/40">
         <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-24 md:py-32">
           <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
             <div>
@@ -512,25 +450,87 @@ function Index() {
 
       {/* Contact */}
       <section id="contact" className="border-t border-border/60 bg-foreground text-background">
-        <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-28 md:py-40">
-          <Reveal>
-            <p className="eyebrow opacity-60">{t.contact.eyebrow}</p>
-            <h2 className="text-display text-5xl md:text-8xl mt-6 leading-[0.95]">
+        <div className="mx-auto max-w-[1300px] px-6 md:px-10 pt-20 md:pt-24 pb-14 md:pb-16 text-center">
+          <Reveal className="flex flex-col items-center">
+            <p className="eyebrow opacity-50">{t.contact.eyebrow}</p>
+
+            <div className="mt-8 inline-flex items-center gap-3 rounded-full border-2 border-accent-ink/70 px-6 py-3 text-sm md:text-base text-background">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-ink opacity-60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent-ink" />
+              </span>
+              <span>{t.contact.available}</span>
+            </div>
+
+            <h2 className="text-display mt-8 max-w-5xl text-5xl md:text-8xl leading-[0.95]">
               {t.contact.title1} <br />
-              <span className="italic opacity-80">{t.contact.title2}</span>
+              <span className="italic text-accent-ink">{t.contact.title2}</span>
             </h2>
-            <div className="mt-14 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-              <a
-                href={`mailto:${t.contact.email}`}
-                className="text-display text-2xl md:text-4xl underline underline-offset-8 decoration-background/30 hover:decoration-background transition"
+
+            <div className="relative mt-10">
+              <div
+                className={`absolute -top-12 left-1/2 -translate-x-1/2 rounded-full border border-background/10 px-5 py-2 text-[11px] tracking-[0.18em] uppercase transition-all duration-300 ${
+                  copied ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-2"
+                }`}
               >
-                {t.contact.email}
-              </a>
-              <div className="flex gap-6 text-sm opacity-70">
-                <a href="https://www.instagram.com/taisartwork" target="_blank" rel="noopener noreferrer" className="hover:opacity-100">{t.contact.social.ig}</a>
-                <a href="https://www.behance.net/taisnonato" target="_blank" rel="noopener noreferrer" className="hover:opacity-100">{t.contact.social.be}</a>
-                <a href="https://www.linkedin.com/in/tais-macedo-306984124/" target="_blank" rel="noopener noreferrer" className="hover:opacity-100">{t.contact.social.ln}</a>
+                {t.contact.copied}
               </div>
+              <div className="inline-flex items-center gap-3 rounded-full border border-background/10 bg-background/10 px-5 py-3 shadow-sm transition-colors hover:border-accent-ink/70">
+                <a
+                  href={`mailto:${t.contact.email}`}
+                  className="text-sm md:text-base font-semibold text-background transition-colors hover:text-accent"
+                >
+                  {t.contact.email}
+                </a>
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className={`relative inline-flex h-4 w-4 items-center justify-center text-background/60 transition duration-200 hover:text-accent active:scale-90 ${
+                    copied ? "scale-110 text-accent" : ""
+                  }`}
+                  aria-label="Copy email"
+                >
+                  {copied && (
+                    <span key={copyBurstKey} className="copy-burst" aria-hidden="true">
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <span key={i} />
+                      ))}
+                    </span>
+                  )}
+                  {copied ? <Check className="relative h-4 w-4 text-accent" /> : <Copy className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            <p className="eyebrow mt-10 opacity-50">{t.contact.alsoFind}</p>
+            <div className="mt-6 flex items-center justify-center gap-5">
+              <a
+                href="https://www.instagram.com/taisartwork"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t.contact.social.ig}
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-background/10 bg-background/10 text-background/70 transition duration-300 hover:scale-110 hover:border-accent-ink/70 hover:text-accent"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.behance.net/taisnonato"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t.contact.social.be}
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-background/10 bg-background/10 text-background/70 transition duration-300 hover:scale-110 hover:border-accent-ink/70 hover:text-accent"
+              >
+                <span className="text-[15px] font-black leading-none tracking-[-0.08em]">Bē</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/tais-macedo-306984124/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t.contact.social.ln}
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-background/10 bg-background/10 text-background/70 transition duration-300 hover:scale-110 hover:border-accent-ink/70 hover:text-accent"
+              >
+                <span className="text-[18px] font-black leading-none tracking-[-0.08em]">in</span>
+              </a>
             </div>
           </Reveal>
         </div>

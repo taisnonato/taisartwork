@@ -78,12 +78,16 @@
   html {
     font-family: var(--font-sans);
     scroll-behavior: smooth;
+    cursor: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 4L25 15.5L16.5 18L12.5 27L6 4Z' fill='%2372b184' stroke='%23578f68' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, auto;
   }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+  }
+  a, button {
+    cursor: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 4L25 15.5L16.5 18L12.5 27L6 4Z' fill='%2372b184' stroke='%23578f68' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, pointer;
   }
   h1, h2, h3, h4, .font-serif {
     font-family: var(--font-serif);
@@ -107,7 +111,84 @@
   font-weight: 500;
 }
 
-@keyframes illo-scroll {
+.hero-dot-bg {
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.hero-dot-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  z-index: -1;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background-image: radial-gradient(circle, oklch(0.5 0.008 260 / 18%) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 100%);
+}
+
+.copy-burst {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.copy-burst span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--color-accent-ink);
+  opacity: 0;
+  transform-origin: 50% 12px;
+  animation: copy-burst 460ms ease-out forwards;
+}
+
+.copy-burst span:nth-child(1) { --angle: 0deg; }
+.copy-burst span:nth-child(2) { --angle: 45deg; }
+.copy-burst span:nth-child(3) { --angle: 90deg; }
+.copy-burst span:nth-child(4) { --angle: 135deg; }
+.copy-burst span:nth-child(5) { --angle: 180deg; }
+.copy-burst span:nth-child(6) { --angle: 225deg; }
+.copy-burst span:nth-child(7) { --angle: 270deg; }
+.copy-burst span:nth-child(8) { --angle: 315deg; }
+
+.illustration-marquee {
+  animation: illustration-marquee 22s linear infinite;
+}
+
+.illustration-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes illustration-marquee {
   from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(var(--illo-distance, 0), 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes copy-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-4px) scaleY(0);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-10px) scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-16px) scaleY(0.25);
+  }
 }
