@@ -6,8 +6,97 @@
 
 /*
  * Minimalist portfolio design system — neutral palette + single warm accent.
- * Fonts loaded via <link> in src/routes/__root.tsx.
+ * Google fonts via <link> in src/routes/__root.tsx.
+ * Display titles use local Eighties Comeback.
  */
+
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaLt-Regular.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaLt-Italic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaRg-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaRg-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaRg-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaRg-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Regular/EightiesComeback-Regular.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Italic/EightiesComebackIt-Regular.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Regular/EightiesComeback-Condensed.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-Condensed.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Eighties Comeback MdSmCn";
+  src: url("./assets/Italic/EightiesComebackIt-MdSmCn.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -37,8 +126,10 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-serif: "Eighties Comeback", "Instrument Serif", ui-serif, Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-outfit: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-coolvetica: "coolvetica", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -97,10 +188,28 @@
 }
 
 @utility text-display {
-  font-family: var(--font-serif);
+  font-family: "Eighties Comeback", "Instrument Serif", ui-serif, Georgia, serif;
   font-weight: 400;
+  font-style: normal;
   line-height: 0.95;
   letter-spacing: -0.02em;
+}
+
+@utility font-outfit {
+  font-family: var(--font-outfit);
+}
+
+@utility font-coolvetica {
+  font-family: var(--font-coolvetica);
+}
+
+@utility font-eighties-condensed {
+  font-family: "Eighties Comeback Condensed", "Eighties Comeback", sans-serif;
+}
+
+@utility font-eighties-mdsmcn {
+  font-family: "Eighties Comeback MdSmCn", "Eighties Comeback Condensed", sans-serif;
+  font-style: italic;
 }
 
 @utility eyebrow {
@@ -171,6 +280,12 @@
 
 .illustration-marquee:hover {
   animation-play-state: paused;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .illustration-tag {
+    display: none;
+  }
 }
 
 @keyframes illustration-marquee {
