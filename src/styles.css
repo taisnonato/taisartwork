@@ -10,6 +10,21 @@
  * Display titles use local Eighties Comeback.
  */
 
+/* —— Coolvetica (El 200 · Lt 300 · Bk 450 · Rg 400 · Bd 700 · Hv 800 · Ul 900) —— */
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaEl-Regular.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaEl-Italic.otf") format("opentype");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
 @font-face {
   font-family: "coolvetica";
   src: url("./assets/Coolvetica/CoolveticaLt-Regular.otf") format("opentype");
@@ -17,7 +32,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: "coolvetica";
   src: url("./assets/Coolvetica/CoolveticaLt-Italic.otf") format("opentype");
@@ -25,7 +39,6 @@
   font-style: italic;
   font-display: swap;
 }
-
 @font-face {
   font-family: "coolvetica";
   src: url("./assets/Coolvetica/CoolveticaRg-Regular.otf") format("opentype");
@@ -33,7 +46,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: "coolvetica";
   src: url("./assets/Coolvetica/CoolveticaRg-Italic.otf") format("opentype");
@@ -41,7 +53,20 @@
   font-style: italic;
   font-display: swap;
 }
-
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaBk-Regular.otf") format("opentype");
+  font-weight: 450;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaBk-Italic.otf") format("opentype");
+  font-weight: 450;
+  font-style: italic;
+  font-display: swap;
+}
 @font-face {
   font-family: "coolvetica";
   src: url("./assets/Coolvetica/CoolveticaRg-Bold.otf") format("opentype");
@@ -49,7 +74,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: "coolvetica";
   src: url("./assets/Coolvetica/CoolveticaRg-BoldItalic.otf") format("opentype");
@@ -57,43 +81,282 @@
   font-style: italic;
   font-display: swap;
 }
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaHv-Regular.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaHv-Italic.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaUl-Regular.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "coolvetica";
+  src: url("./assets/Coolvetica/CoolveticaUl-Italic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
 
+/* —— Eighties Comeback (standard width) —— */
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Regular/EightiesComeback-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face {
   font-family: "Eighties Comeback";
   src: url("./assets/Regular/EightiesComeback-Regular.otf") format("opentype");
-  font-weight: 100 900;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Regular/EightiesComeback-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Regular/EightiesComeback-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Regular/EightiesComeback-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Regular/EightiesComeback-ExtraBold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Regular/EightiesComeback-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Italic/EightiesComebackIt-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
 @font-face {
   font-family: "Eighties Comeback";
   src: url("./assets/Italic/EightiesComebackIt-Regular.otf") format("opentype");
-  font-weight: 100 900;
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Italic/EightiesComebackIt-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Italic/EightiesComebackIt-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Italic/EightiesComebackIt-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Italic/EightiesComebackIt-ExtraBold.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback";
+  src: url("./assets/Italic/EightiesComebackIt-Black.otf") format("opentype");
+  font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 
+/* —— Eighties Comeback Condensed —— */
 @font-face {
   font-family: "Eighties Comeback Condensed";
-  src: url("./assets/Regular/EightiesComeback-Condensed.otf") format("opentype");
-  font-weight: 100 900;
+  src: url("./assets/Regular/EightiesComeback-LightCond.otf") format("opentype");
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
-
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Regular/EightiesComeback-Condensed.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Regular/EightiesComeback-MedCond.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Regular/EightiesComeback-SemBdCond.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Regular/EightiesComeback-BoldCond.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Regular/EightiesComeback-ExtBdCond.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Regular/EightiesComeback-BlackCond.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-LightCond.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
 @font-face {
   font-family: "Eighties Comeback Condensed";
   src: url("./assets/Italic/EightiesComebackIt-Condensed.otf") format("opentype");
-  font-weight: 100 900;
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-MedCond.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-SemBdCond.otf") format("opentype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-BoldCond.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-ExtBdCond.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-BlackCond.otf") format("opentype");
+  font-weight: 900;
   font-style: italic;
   font-display: swap;
 }
 
+/* —— Eighties Comeback width variants —— */
 @font-face {
   font-family: "Eighties Comeback MdSmCn";
   src: url("./assets/Italic/EightiesComebackIt-MdSmCn.otf") format("opentype");
-  font-weight: 100 900;
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Semi Condensed";
+  src: url("./assets/Regular/EightiesComeback-SemiCond.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Semi Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-SemiCond.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Extra Condensed";
+  src: url("./assets/Regular/EightiesComeback-ExtraCond.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Extra Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-ExtraCond.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Ultra Condensed";
+  src: url("./assets/Regular/EightiesComeback-UltraCond.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Eighties Comeback Ultra Condensed";
+  src: url("./assets/Italic/EightiesComebackIt-UltraCond.otf") format("opentype");
+  font-weight: 400;
   font-style: italic;
   font-display: swap;
 }

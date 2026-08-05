@@ -335,7 +335,7 @@ function Index() {
                 <button
                   onClick={() => setLang(l)}
                   className={`min-w-[2ch] text-center leading-none transition-colors ${
-                    lang === l ? "text-accent-ink font-[900]" : "hover:text-accent-ink"
+                    lang === l ? "text-accent-ink font-black" : "hover:text-accent-ink"
                   }`}
                   aria-label={`Switch language to ${l.toUpperCase()}`}
                 >
