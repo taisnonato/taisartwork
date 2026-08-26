@@ -387,10 +387,10 @@ function Index() {
         id="top"
         className="hero-dot-bg mx-auto flex min-h-[calc(100svh-5rem)] max-w-[1300px] flex-col justify-center px-6 pb-16 pt-24 sm:pt-28 md:px-10 md:pb-20 md:pt-28"
       >
-        <div className="grid items-center gap-8 md:grid-cols-[minmax(0,0.34fr)_minmax(0,0.66fr)] md:gap-x-8 lg:gap-x-10">
+        <div className="grid items-center gap-8 md:grid-cols-[minmax(0,0.3fr)_minmax(0,0.7fr)] md:gap-x-6 lg:gap-x-8">
           <div>
             <p className="eyebrow text-muted-foreground">{t.hero.role}</p>
-            <h1 className="mt-6 text-[2.5rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.25rem] font-normal leading-[0.92] text-foreground">
+            <h1 className="mt-6 text-[3rem] sm:text-[3.6rem] md:text-[4.4rem] lg:text-[5.25rem] font-normal leading-[0.92] text-foreground">
               <span className="block font-eighties-condensed">{t.hero.title1}</span>
               <span className="mt-1 block font-eighties-mdsmcn text-accent-ink">{t.hero.title2}</span>
             </h1>
