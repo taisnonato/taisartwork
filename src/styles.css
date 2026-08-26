@@ -550,7 +550,7 @@
 .hero-desk-art {
   width: 100%;
   height: auto;
-  max-height: clamp(18rem, 56vh, 40rem);
+  max-height: clamp(22rem, 70vh, 50rem);
   object-fit: contain;
   object-position: center center;
 }
