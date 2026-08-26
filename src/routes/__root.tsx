@@ -75,21 +75,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Tais Artwork — Ilustração, Social Media & iGaming" },
+      { title: "Tais Artwork — Ilustração & Social Media" },
       {
         name: "description",
         content:
-          "Portfólio de Tais: ilustração autoral, design para social media e design para iGaming. Um sistema visual coeso para marcas que valorizam narrativa e detalhe.",
+          "Portfólio de Tais: ilustração autoral e design para social media. Um sistema visual coeso para marcas que valorizam narrativa e detalhe.",
       },
-      { property: "og:title", content: "Tais Artwork — Ilustração, Social Media & iGaming" },
+      { property: "og:title", content: "Tais Artwork — Ilustração & Social Media" },
       {
         property: "og:description",
-        content: "Portfólio de Tais: ilustração autoral, design para social media e design para iGaming. Um sistema visual coeso para marcas que valorizam narrativa e detalhe.",
+        content: "Portfólio de Tais: ilustração autoral e design para social media. Um sistema visual coeso para marcas que valorizam narrativa e detalhe.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Tais Artwork — Ilustração, Social Media & iGaming" },
-      { name: "twitter:description", content: "Portfólio de Tais: ilustração autoral, design para social media e design para iGaming. Um sistema visual coeso para marcas que valorizam narrativa e detalhe." },
+      { name: "twitter:title", content: "Tais Artwork — Ilustração & Social Media" },
+      { name: "twitter:description", content: "Portfólio de Tais: ilustração autoral e design para social media. Um sistema visual coeso para marcas que valorizam narrativa e detalhe." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/98293c69-6a1f-44dd-b818-fd5363f18dfb/id-preview-18f45911--c80499ee-1221-4813-a9c3-a179c29debdb.lovable.app-1784155987534.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/98293c69-6a1f-44dd-b818-fd5363f18dfb/id-preview-18f45911--c80499ee-1221-4813-a9c3-a179c29debdb.lovable.app-1784155987534.png" },
     ],
@@ -113,9 +113,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("tais-theme");if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}})();`,
+          }}
+        />
       </head>
       <body>
         {children}

@@ -383,6 +383,10 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-moss: var(--accent-ink);
+  --color-contact: var(--contact-bg);
+  --color-contact-fg: var(--contact-fg);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -410,21 +414,59 @@
   --secondary-foreground: var(--foreground);
   --muted: oklch(0.94 0.003 90);
   --muted-foreground: oklch(0.5 0.008 260);
-  --accent: oklch(0.75 0.08 150);
+  --brand-green: #5c992d;
+  --accent: color-mix(in srgb, var(--brand-green) 42%, white);
   --accent-foreground: var(--foreground);
-  --accent-ink: oklch(0.45 0.08 150);
+  --accent-ink: var(--brand-green);
+  --accent-soft: color-mix(in srgb, var(--brand-green) 10%, white);
+  --brand-green-dark: color-mix(in srgb, var(--brand-green) 78%, black);
 
   --destructive: oklch(0.55 0.2 25);
   --destructive-foreground: var(--background);
   --border: oklch(0.9 0.003 90);
   --input: var(--border);
   --ring: var(--accent-ink);
+  --contact-bg: var(--foreground);
+  --contact-fg: var(--background);
 }
 
 .dark {
-  --background: oklch(0.14 0.005 260);
-  --foreground: oklch(0.96 0.003 90);
-  --border: oklch(1 0 0 / 12%);
+  --background: oklch(0.12 0.008 260);
+  --foreground: oklch(0.95 0.003 90);
+  --card: oklch(0.17 0.009 260);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --primary: var(--foreground);
+  --primary-foreground: var(--background);
+  --secondary: oklch(0.24 0.01 260);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.28 0.01 260);
+  --muted-foreground: oklch(0.78 0.014 260);
+  --accent: color-mix(in srgb, var(--brand-green) 45%, white);
+  --accent-foreground: var(--background);
+  --accent-ink: #72b043;
+  --accent-soft: color-mix(in srgb, var(--brand-green) 34%, var(--card));
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: var(--foreground);
+  --border: oklch(1 0 0 / 24%);
+  --input: var(--border);
+  --ring: var(--accent-ink);
+  --contact-bg: oklch(0.07 0.006 260);
+  --contact-fg: oklch(0.95 0.003 90);
+}
+
+.dark .hero-dot-bg::before {
+  background-image: radial-gradient(circle, oklch(1 0 0 / 30%) 1px, transparent 1px);
+}
+
+.dark .illustration-tag {
+  background: color-mix(in srgb, var(--brand-green) 24%, var(--card));
+  border-color: color-mix(in srgb, var(--brand-green) 55%, white);
+  box-shadow: 0 8px 24px oklch(0 0 0 / 35%);
+}
+
+.dark .eyebrow {
+  color: var(--color-muted-foreground);
 }
 
 @layer base {
@@ -432,7 +474,7 @@
   html {
     font-family: var(--font-sans);
     scroll-behavior: smooth;
-    cursor: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 4L25 15.5L16.5 18L12.5 27L6 4Z' fill='%2372b184' stroke='%23578f68' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, auto;
+    cursor: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 4L25 15.5L16.5 18L12.5 27L6 4Z' fill='%235c992d' stroke='%234a7524' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, auto;
   }
   body {
     background-color: var(--color-background);
@@ -441,7 +483,7 @@
     -webkit-font-smoothing: antialiased;
   }
   a, button {
-    cursor: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 4L25 15.5L16.5 18L12.5 27L6 4Z' fill='%2372b184' stroke='%23578f68' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, pointer;
+    cursor: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 4L25 15.5L16.5 18L12.5 27L6 4Z' fill='%235c992d' stroke='%234a7524' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 6 4, pointer;
   }
   h1, h2, h3, h4, .font-serif {
     font-family: var(--font-serif);
@@ -499,10 +541,18 @@
   z-index: -1;
   transform: translateX(-50%);
   pointer-events: none;
-  background-image: radial-gradient(circle, oklch(0.5 0.008 260 / 18%) 1px, transparent 1px);
+  background-image: radial-gradient(circle, oklch(0.5 0.008 260 / 24%) 1px, transparent 1px);
   background-size: 24px 24px;
   mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 100%);
+}
+
+.hero-desk-art {
+  width: 100%;
+  height: auto;
+  max-height: clamp(18rem, 56vh, 40rem);
+  object-fit: contain;
+  object-position: center center;
 }
 
 .copy-burst {
