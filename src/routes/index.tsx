@@ -14,7 +14,7 @@ import illustrationPearls from "@/assets/illustration-pearls.png";
 import illustrationButterfly from "@/assets/illustration-butterfly.png";
 import illustrationHands from "@/assets/illustration-hands.png";
 import illustrationMonalisa from "@/assets/illustration-monalisa.png";
-import homeHero from "@/assets/home-hero.png";
+import { HeroDeskArt } from "@/components/HeroDeskArt";
 const portrait = portraitAsset.url;
 const illustrationSlides = [
   { src: illustrationButterfly, alt: "Ilustração autoral — borboletas", tag: "adobedraw" },
@@ -45,6 +45,7 @@ const dict = {
       title1: "Tais",
       title2: "Macedo",
       scroll: "Role para explorar",
+      memories: "memórias",
     },
     intro: {
       eyebrow: "Sobre mim",
@@ -82,6 +83,7 @@ const dict = {
       title1: "Tais",
       title2: "Macedo",
       scroll: "Scroll to explore",
+      memories: "memories",
     },
     intro: {
       eyebrow: "About me",
@@ -119,6 +121,7 @@ const dict = {
       title1: "Tais",
       title2: "Macedo",
       scroll: "Desliza para explorar",
+      memories: "recuerdos",
     },
     intro: {
       eyebrow: "Sobre mí",
@@ -398,13 +401,7 @@ function Index() {
             </h1>
           </div>
           <div className="md:min-w-0">
-            <img
-              src={homeHero}
-              alt=""
-              aria-hidden="true"
-              className="hero-desk-art w-full"
-              loading="eager"
-            />
+            <HeroDeskArt memoriesLabel={t.hero.memories} />
           </div>
         </div>
       </section>
