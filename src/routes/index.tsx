@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { Check, Copy, Globe, Instagram } from "lucide-react";
 import work1 from "@/assets/work-1.jpg";
 import work2 from "@/assets/work-2.jpg";
 import work5 from "@/assets/work-5.jpg";
 import work6 from "@/assets/work-6.jpg";
-import portraitAsset from "@/assets/portrait-tais.png.asset.json";
-import { getStoredTheme, type ThemeMode } from "@/lib/theme";
+import { applyTheme, type ThemeMode } from "@/lib/theme";
 import illustrationMegan from "@/assets/illustration-megan.gif";
 import illustrationCat from "@/assets/illustration-cat.gif";
 import illustrationYukako from "@/assets/illustration-yukako.png";
@@ -15,7 +14,66 @@ import illustrationButterfly from "@/assets/illustration-butterfly.png";
 import illustrationHands from "@/assets/illustration-hands.png";
 import illustrationMonalisa from "@/assets/illustration-monalisa.png";
 import { HeroDeskArt } from "@/components/HeroDeskArt";
-const portrait = portraitAsset.url;
+import { AboutCollage } from "@/components/AboutCollage";
+import { BasedInStamp } from "@/components/BasedInStamp";
+import { WordPuzzle } from "@/components/WordPuzzle";
+import { ResumeCards } from "@/components/ResumeCards";
+import { IllustrationStarCursor } from "@/components/IllustrationStarCursor";
+import skillsFolderClosed from "@/assets/skills/folder01.svg";
+import skillsFolderOpen from "@/assets/skills/folder02.svg";
+import skillPhotoshop from "@/assets/skills/photoshop.webp";
+import skillIllustrator from "@/assets/skills/illustrator.webp";
+import skillAfterEffects from "@/assets/skills/after-effects.webp";
+import skillPremiere from "@/assets/skills/premiere.webp";
+import skillFigma from "@/assets/skills/figma.webp";
+import skillCapcut from "@/assets/skills/capcut.webp";
+import skillChatgpt from "@/assets/skills/chatgpt.webp";
+import skillMagnific from "@/assets/skills/magnific.png";
+import skillLovable from "@/assets/skills/lovable.png";
+import companyAdidas from "@/assets/workedwith/adidas.webp";
+import companyAmericanas from "@/assets/workedwith/americanas.webp";
+import companyBancoDoBrasil from "@/assets/workedwith/banco-do-brasil.webp";
+import companyChevrolet from "@/assets/workedwith/chevrolet.webp";
+import companyC6Bank from "@/assets/workedwith/c6-bank.webp";
+import companyFitFood from "@/assets/workedwith/fit-food.png";
+
+const companyLogos = [
+  { src: companyAdidas, alt: "Adidas" },
+  { src: companyAmericanas, alt: "Americanas" },
+  { src: companyBancoDoBrasil, alt: "Banco do Brasil" },
+  { src: companyChevrolet, alt: "Chevrolet" },
+  { src: companyC6Bank, alt: "C6 Bank" },
+  { src: companyFitFood, alt: "Fit Food" },
+] as const;
+
+const skillLogos = [
+  { src: skillPhotoshop, alt: "Photoshop", x: "-3.7rem", y: "-6.9rem", r: "-8deg", delay: "0ms" },
+  { src: skillIllustrator, alt: "Illustrator", x: "-0.6rem", y: "-7.5rem", r: "-3deg", delay: "30ms" },
+  { src: skillPremiere, alt: "Premiere Pro", x: "2.4rem", y: "-7.5rem", r: "3deg", delay: "60ms" },
+  { src: skillAfterEffects, alt: "After Effects", x: "5.5rem", y: "-6.9rem", r: "8deg", delay: "90ms" },
+  { src: skillFigma, alt: "Figma", x: "-2.5rem", y: "-4.1rem", r: "-6deg", delay: "50ms" },
+  { src: skillCapcut, alt: "CapCut", x: "0.9rem", y: "-4.5rem", r: "0deg", delay: "80ms" },
+  { src: skillChatgpt, alt: "ChatGPT", x: "4.3rem", y: "-4.1rem", r: "6deg", delay: "110ms" },
+  {
+    src: skillMagnific,
+    alt: "Magnific",
+    x: "-0.45rem",
+    y: "-1.85rem",
+    r: "-2deg",
+    delay: "140ms",
+    large: true,
+  },
+  {
+    src: skillLovable,
+    alt: "Lovable",
+    x: "6.3rem",
+    y: "-1.85rem",
+    r: "2deg",
+    delay: "160ms",
+    large: true,
+  },
+] as const;
+
 const illustrationSlides = [
   { src: illustrationButterfly, alt: "Ilustração autoral — borboletas", tag: "adobedraw" },
   { src: illustrationMegan, alt: "Ilustração autoral — Megan", tag: "adobephotoshop" },
@@ -50,6 +108,33 @@ const dict = {
     intro: {
       eyebrow: "Sobre mim",
       body: "Trabalho em duas frentes que se conversam: ilustração autoral e design para social media. Em ambas, o ponto de partida é o mesmo — narrativa, composição e um olhar cuidadoso para o detalhe. Cada projeto começa com uma conversa e termina com um sistema visual que pode crescer com a marca.",
+      lifeBtn: "minha vida como designer",
+      makingNote: ["fazendo arte", "desde 2008"],
+      digitalNote: ["minha arte digital", "começou aqui"],
+    },
+    homeBento: {
+      skills: "habilidades",
+      design: "what I design",
+      companies: "empresas com que já trabalhei",
+      companiesShort: "empresas",
+      resume: "veja meu currículo",
+      resumeShort: "currículo",
+      networks: "redes",
+      basedIn: "Based in",
+      country: "Espanha",
+      city: "Valência",
+      puzzle: [
+        "social media",
+        "design UX/UI",
+        "tecnologia IA",
+        "edição de imagem",
+        "edição de vídeo",
+        "animação",
+        "motion",
+        "ilustração 2D",
+        "vetorização",
+        "conceito de personagem",
+      ] as const,
     },
     illu: {
       eyebrow: "01 · Ilustração",
@@ -88,6 +173,33 @@ const dict = {
     intro: {
       eyebrow: "About me",
       body: "I work across two connected practices: personal illustration and social media design. The starting point is always the same — narrative, composition, and a careful eye for detail. Each project begins with a conversation and ends with a visual system that can grow with the brand.",
+      lifeBtn: "my life as a designer",
+      makingNote: ["making art", "since 2008"],
+      digitalNote: ["my digital art", "started here"],
+    },
+    homeBento: {
+      skills: "skills",
+      design: "what I design",
+      companies: "companies I've worked with",
+      companiesShort: "companies",
+      resume: "checkout my resume",
+      resumeShort: "resume",
+      networks: "networks",
+      basedIn: "Based in",
+      country: "Spain",
+      city: "Valencia",
+      puzzle: [
+        "social media",
+        "UX/UI design",
+        "AI technology",
+        "image editing",
+        "video editing",
+        "animation",
+        "motion",
+        "2D illustration",
+        "vectorization",
+        "character concept",
+      ] as const,
     },
     illu: {
       eyebrow: "01 · Illustration",
@@ -126,6 +238,33 @@ const dict = {
     intro: {
       eyebrow: "Sobre mí",
       body: "Trabajo en dos frentes que dialogan entre sí: ilustración de autor y diseño para redes sociales. En ambos, el punto de partida es el mismo — narrativa, composición y una mirada cuidadosa al detalle. Cada proyecto empieza con una conversación y termina con un sistema visual que puede crecer con la marca.",
+      lifeBtn: "mi vida como diseñadora",
+      makingNote: ["haciendo arte", "desde 2008"],
+      digitalNote: ["mi arte digital", "empezó aquí"],
+    },
+    homeBento: {
+      skills: "habilidades",
+      design: "what I design",
+      companies: "empresas con las que he trabajado",
+      companiesShort: "empresas",
+      resume: "mira mi currículum",
+      resumeShort: "currículum",
+      networks: "redes",
+      basedIn: "Based in",
+      country: "España",
+      city: "Valencia",
+      puzzle: [
+        "social media",
+        "diseño UX/UI",
+        "tecnología IA",
+        "edición de imagen",
+        "edición de vídeo",
+        "animación",
+        "motion",
+        "ilustración 2D",
+        "vectorización",
+        "concepto de personaje",
+      ] as const,
     },
     illu: {
       eyebrow: "01 · Ilustración",
@@ -143,7 +282,7 @@ const dict = {
     contact: {
       eyebrow: "contacto",
       available: "Abierta a roles senior, colaboraciones y grandes conversaciones.",
-      title1: "¿Creamos",
+      title1: "Vamos a crear",
       title2: "algo juntos?",
       email: "taiscapinan@gmail.com",
       alsoFind: "También encuéntrame en",
@@ -190,20 +329,245 @@ function Reveal({ children, className = "" }: { children: ReactNode; className?:
 
 type Slide = { src: string; alt: string; imageClassName?: string; tag?: string };
 
+function CompaniesMarquee({
+  logos,
+}: {
+  logos: readonly { src: string; alt: string }[];
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const halfWidthRef = useRef(0);
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startOffsetRef = useRef(0);
+  const [dragging, setDragging] = useState(false);
+  const slides = [...logos, ...logos];
+
+  const wrapOffset = (value: number) => {
+    const half = halfWidthRef.current;
+    if (half <= 0) return value;
+    let next = value;
+    while (next <= -half) next += half;
+    while (next > 0) next -= half;
+    return next;
+  };
+
+  const applyOffset = (value: number) => {
+    offsetRef.current = value;
+    const el = trackRef.current;
+    if (el) el.style.transform = `translate3d(${value}px, 0, 0)`;
+  };
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const measure = () => {
+      halfWidthRef.current = el.scrollWidth / 2;
+      applyOffset(wrapOffset(offsetRef.current));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let last = performance.now();
+    let raf = 0;
+    let visible = true;
+    const tick = (now: number) => {
+      raf = 0;
+      if (!visible) return;
+      const dt = Math.min((now - last) / 1000, 0.064);
+      last = now;
+      if (!draggingRef.current && halfWidthRef.current > 0) {
+        const speed = halfWidthRef.current / 12;
+        applyOffset(wrapOffset(offsetRef.current - speed * dt));
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      visible = Boolean(entry?.isIntersecting);
+      if (visible && !raf) {
+        last = performance.now();
+        raf = requestAnimationFrame(tick);
+      }
+    });
+    io.observe(el);
+    raf = requestAnimationFrame(tick);
+    return () => {
+      visible = false;
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
+    draggingRef.current = true;
+    setDragging(true);
+    startXRef.current = e.clientX;
+    startOffsetRef.current = offsetRef.current;
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    const dx = e.clientX - startXRef.current;
+    applyOffset(wrapOffset(startOffsetRef.current + dx));
+  };
+
+  const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    setDragging(false);
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+  };
+
+  return (
+    <div
+      className={`home-bento-companies${dragging ? " is-dragging" : ""}`}
+      aria-hidden="true"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+    >
+      <div ref={trackRef} className="home-bento-companies-track">
+        {slides.map((logo, i) => (
+          <img
+            key={`${logo.alt}-${i}`}
+            src={logo.src}
+            alt=""
+            className="home-bento-company-logo"
+            draggable={false}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function IllustrationScroller({ slides }: { slides: Slide[] }) {
-  const marqueeSlides = [...slides, ...slides];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const halfWidthRef = useRef(0);
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startOffsetRef = useRef(0);
+  const [dragging, setDragging] = useState(false);
   const [tip, setTip] = useState<{ text: string; x: number; y: number } | null>(null);
+  const marqueeSlides = [...slides, ...slides];
+
+  const wrapOffset = (value: number) => {
+    const half = halfWidthRef.current;
+    if (half <= 0) return value;
+    let next = value;
+    while (next <= -half) next += half;
+    while (next > 0) next -= half;
+    return next;
+  };
+
+  const applyOffset = (value: number) => {
+    offsetRef.current = value;
+    const el = trackRef.current;
+    if (el) el.style.transform = `translate3d(${value}px, 0, 0)`;
+  };
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const measure = () => {
+      halfWidthRef.current = el.scrollWidth / 2;
+      applyOffset(wrapOffset(offsetRef.current));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let last = performance.now();
+    let raf = 0;
+    let visible = true;
+    const tick = (now: number) => {
+      raf = 0;
+      if (!visible) return;
+      const dt = Math.min((now - last) / 1000, 0.064);
+      last = now;
+      if (!draggingRef.current && halfWidthRef.current > 0) {
+        const speed = halfWidthRef.current / 22;
+        applyOffset(wrapOffset(offsetRef.current - speed * dt));
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      visible = Boolean(entry?.isIntersecting);
+      if (visible && !raf) {
+        last = performance.now();
+        raf = requestAnimationFrame(tick);
+      }
+    });
+    io.observe(el);
+    raf = requestAnimationFrame(tick);
+    return () => {
+      visible = false;
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
+    draggingRef.current = true;
+    setDragging(true);
+    setTip(null);
+    startXRef.current = e.clientX;
+    startOffsetRef.current = offsetRef.current;
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    const dx = e.clientX - startXRef.current;
+    applyOffset(wrapOffset(startOffsetRef.current + dx));
+  };
+
+  const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    setDragging(false);
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+  };
 
   return (
     <>
-      <div className="relative overflow-hidden">
-        <div className="illustration-marquee flex w-max items-center gap-3 md:gap-4 px-4 md:px-6 will-change-transform">
+      <div
+        className={`illustration-scroller relative overflow-hidden ${dragging ? "is-dragging" : ""}`}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
+        <div
+          ref={trackRef}
+          className="illustration-track flex w-max items-center gap-3 md:gap-4 px-4 md:px-6 will-change-transform"
+        >
           {marqueeSlides.map((s, i) => (
             <figure
               key={`${s.alt}-${i}`}
               className="relative h-[46vh] md:h-[56vh] max-h-[520px] shrink-0 overflow-hidden rounded-xl bg-muted ring-1 ring-border/40 dark:ring-border"
               onMouseMove={
-                s.tag
+                s.tag && !dragging
                   ? (e) => setTip({ text: s.tag!, x: e.clientX, y: e.clientY })
                   : undefined
               }
@@ -213,13 +577,14 @@ function IllustrationScroller({ slides }: { slides: Slide[] }) {
                 src={s.src}
                 alt={s.alt}
                 loading="lazy"
-                className={`h-full w-auto block ${s.imageClassName ?? ""}`}
+                draggable={false}
+                className={`h-full w-auto block pointer-events-none select-none ${s.imageClassName ?? ""}`}
               />
             </figure>
           ))}
         </div>
       </div>
-      {tip && (
+      {tip && !dragging && (
         <span
           className="illustration-tag pointer-events-none fixed z-50 rounded-full border border-accent-ink bg-accent-soft px-3.5 py-1.5 font-mono text-[11px] lowercase leading-none tracking-wide text-accent-ink shadow-sm"
           style={{ left: tip.x + 14, top: tip.y + 14 }}
@@ -231,19 +596,145 @@ function IllustrationScroller({ slides }: { slides: Slide[] }) {
   );
 }
 
+function NetworksLinks({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    let fullyGone = true;
+    let enterTimer = 0;
+
+    const playEnter = () => {
+      window.clearTimeout(enterTimer);
+      setActive(false);
+      enterTimer = window.setTimeout(() => setActive(true), 40);
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting && entry.intersectionRatio > 0;
+
+        if (visible) {
+          if (fullyGone) {
+            fullyGone = false;
+            playEnter();
+          }
+          return;
+        }
+
+        fullyGone = true;
+        window.clearTimeout(enterTimer);
+        setActive(false);
+      },
+      { threshold: [0, 0.01, 1] },
+    );
+
+    io.observe(el);
+    return () => {
+      window.clearTimeout(enterTimer);
+      io.disconnect();
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`home-bento-networks-links${active ? " is-active" : ""}`}
+      aria-label={label}
+    >
+      {children}
+    </div>
+  );
+}
+
 function Index() {
   const [lang, setLang] = useState<Lang>("pt");
   const [copied, setCopied] = useState(false);
   const [copyBurstKey, setCopyBurstKey] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [navOnDark, setNavOnDark] = useState(false);
-  const [theme, setTheme] = useState<ThemeMode>(() => getStoredTheme());
+  const [theme, setTheme] = useState<ThemeMode>("light");
   const [activeSection, setActiveSection] = useState("top");
+  const [skillsOpen, setSkillsOpen] = useState(false);
+  const skillsRef = useRef<HTMLDivElement>(null);
   const t = dict[lang];
   const navLightText = navOnDark && theme === "light";
 
   useEffect(() => {
-    setTheme(getStoredTheme());
+    // Clear stuck dark from removed lamp night toggle
+    applyTheme("light");
+    setTheme("light");
+  }, []);
+
+  useEffect(() => {
+    const el = skillsRef.current;
+    if (!el) return;
+
+    const mq = window.matchMedia("(max-width: 767px)");
+    let wasInView = false;
+    let reopenTimer = 0;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!mq.matches) {
+          wasInView = false;
+          setSkillsOpen(false);
+          return;
+        }
+
+        // Open/close in both scroll directions (down into view and back up)
+        const inView = entry.isIntersecting && entry.intersectionRatio >= 0.22;
+        window.clearTimeout(reopenTimer);
+
+        if (inView && !wasInView) {
+          // Force closed → open so the fly-out always replays
+          setSkillsOpen(false);
+          reopenTimer = window.setTimeout(() => setSkillsOpen(true), 48);
+        } else if (!inView && wasInView) {
+          setSkillsOpen(false);
+        }
+
+        wasInView = inView;
+      },
+      { threshold: [0, 0.12, 0.22, 0.35, 0.5, 0.75, 1] },
+    );
+    io.observe(el);
+
+    const onMq = () => {
+      if (!mq.matches) {
+        wasInView = false;
+        setSkillsOpen(false);
+      }
+    };
+    mq.addEventListener("change", onMq);
+    return () => {
+      window.clearTimeout(reopenTimer);
+      io.disconnect();
+      mq.removeEventListener("change", onMq);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    if (window.location.hash && window.location.hash !== "#top") {
+      history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}#top`
+      );
+    }
+    window.scrollTo(0, 0);
   }, []);
 
   const navLinks = [
@@ -388,7 +879,7 @@ function Index() {
       {/* Hero */}
       <section
         id="top"
-        className="hero-dot-bg mx-auto flex min-h-[calc(100svh-5rem)] max-w-[1300px] flex-col justify-center px-6 pb-16 pt-24 sm:pt-28 md:px-10 md:pb-20 md:pt-28"
+        className="hero-dot-bg page-shell mx-auto flex min-h-[calc(100svh-5rem)] flex-col justify-center pb-16 pt-24 sm:pt-28 md:pb-20 md:pt-28"
       >
         <div className="grid items-center md:items-start gap-8 md:grid-cols-[minmax(0,0.3fr)_minmax(0,0.7fr)] md:gap-x-6 lg:gap-x-8">
           <div className="md:pl-8 lg:pl-14 md:pt-8 lg:pt-12">
@@ -406,29 +897,171 @@ function Index() {
         </div>
       </section>
 
+      {/* Home bento bases */}
+      <section className="page-shell pb-8 md:pb-12" aria-label="Home highlights">
+        <div className="home-bento-grid">
+          <div
+            ref={skillsRef}
+            className={`home-bento-cell home-bento-a${skillsOpen ? " is-skills-open" : ""}`}
+          >
+            <p className="home-bento-label">{t.homeBento.skills}</p>
+            <div className="home-bento-skills-icon" aria-hidden="true">
+              <img
+                src={skillsFolderClosed}
+                alt=""
+                className="home-bento-folder home-bento-folder--closed"
+                draggable={false}
+              />
+              <img
+                src={skillsFolderOpen}
+                alt=""
+                className="home-bento-folder home-bento-folder--open"
+                draggable={false}
+              />
+              {skillLogos.map((logo, i) => (
+                <img
+                  key={logo.alt}
+                  src={logo.src}
+                  alt=""
+                  className={
+                    "large" in logo && logo.large
+                      ? "home-bento-skill-logo home-bento-skill-logo--wide"
+                      : "home-bento-skill-logo"
+                  }
+                  draggable={false}
+                  style={{
+                    ["--logo-x" as string]: logo.x,
+                    ["--logo-y" as string]: logo.y,
+                    ["--logo-r" as string]: logo.r,
+                    ["--logo-delay" as string]: logo.delay,
+                    ["--logo-i" as string]: String(i),
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="home-bento-cell home-bento-b">
+            <p className="home-bento-label">{t.homeBento.design}</p>
+            <WordPuzzle words={[...t.homeBento.puzzle]} />
+          </div>
+          <div className="home-bento-cell home-bento-c">
+            <p className="home-bento-label">
+              <span className="home-bento-label-full">{t.homeBento.companies}</span>
+              <span className="home-bento-label-short">{t.homeBento.companiesShort}</span>
+            </p>
+            <CompaniesMarquee logos={companyLogos} />
+          </div>
+          <div className="home-bento-d">
+            <div className="home-bento-cell home-bento-d-half home-bento-resume">
+              <p className="home-bento-label">
+                <span className="home-bento-label-full">{t.homeBento.resume}</span>
+                <span className="home-bento-label-short">{t.homeBento.resumeShort}</span>
+              </p>
+              <ResumeCards />
+            </div>
+            <div className="home-bento-cell home-bento-d-half home-bento-networks">
+              <p className="home-bento-label">{t.homeBento.networks}</p>
+              <NetworksLinks label={t.homeBento.networks}>
+                <span className="home-bento-network-pop">
+                  <a
+                    href="https://www.instagram.com/taisartwork"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t.contact.social.ig}
+                    className="home-bento-network-link"
+                  >
+                    <Instagram className="home-bento-network-icon" aria-hidden="true" />
+                  </a>
+                </span>
+                <span className="home-bento-network-pop">
+                  <a
+                    href="https://www.behance.net/taisnonato"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t.contact.social.be}
+                    className="home-bento-network-link"
+                  >
+                    <span className="home-bento-network-text" aria-hidden="true">
+                      Bē
+                    </span>
+                  </a>
+                </span>
+                <span className="home-bento-network-pop">
+                  <a
+                    href="https://www.linkedin.com/in/tais-macedo-306984124/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t.contact.social.ln}
+                    className="home-bento-network-link"
+                  >
+                    <span className="home-bento-network-text home-bento-network-text--in" aria-hidden="true">
+                      in
+                    </span>
+                  </a>
+                </span>
+              </NetworksLinks>
+            </div>
+          </div>
+          <div className="home-bento-cell home-bento-e">
+            <BasedInStamp
+              label={t.homeBento.basedIn}
+              country={t.homeBento.country}
+              city={t.homeBento.city}
+              lang={lang}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* About */}
       <section id="about">
-        <div className="mx-auto max-w-[1200px] px-6 md:px-10 py-24 md:py-36 grid md:grid-cols-[5fr_7fr] gap-10 md:gap-16 items-center">
-          <Reveal>
-            <img
-              src={portrait}
-              alt="Retrato de Tais, ilustradora e designer"
-              className="w-full h-auto object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-all duration-700 dark:brightness-[1.08] dark:contrast-[1.03]"
-              loading="lazy"
-            />
-          </Reveal>
-          <Reveal>
+        <div className="page-shell about-section pt-10 pb-24 md:pt-14 md:pb-36 grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-8 md:gap-x-14 md:gap-y-8 items-start justify-items-center md:justify-items-start">
+          <AboutCollage
+            makingNote={t.intro.makingNote}
+            digitalNote={t.intro.digitalNote}
+          />
+          <Reveal className="about-copy-wrap w-full md:max-w-[23.5rem] md:pt-5">
             <p className="eyebrow text-muted-foreground">{t.intro.eyebrow}</p>
-            <p className="mt-8 text-lg md:text-xl leading-[1.5] text-foreground font-coolvetica font-normal">
-              {t.intro.body}
-            </p>
+            <div className="about-copy mt-5 space-y-5 font-coolvetica">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </p>
+              <p>
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.
+              </p>
+              <p>
+                Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur.
+              </p>
+            </div>
+            <button type="button" className="about-life-btn group mt-8">
+              <span>{t.intro.lifeBtn}</span>
+              <svg
+                className="about-life-btn__arrow"
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M2.5 7h9M7.5 3.5 11 7l-3.5 3.5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </Reveal>
         </div>
       </section>
 
       {/* Illustration */}
-      <section id="illustration" className="border-t border-border/60 dark:border-border">
-        <div className="mx-auto max-w-[1300px] px-6 md:px-10 pt-24 md:pt-32">
+      <IllustrationStarCursor className="border-t border-border/60 dark:border-border">
+        <div className="page-shell pt-24 md:pt-32">
           <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
             <div>
               <h2 className="font-eighties-condensed text-4xl md:text-6xl font-normal text-foreground"><span className="text-accent-ink">{t.illu.title}</span></h2>
@@ -437,7 +1070,7 @@ function Index() {
           </Reveal>
         </div>
         <IllustrationScroller slides={illustrationSlides} />
-        <div className="mx-auto max-w-[1300px] px-6 md:px-10 pt-8 pb-16 md:pb-20 flex justify-end">
+        <div className="page-shell pt-8 pb-16 md:pb-20 flex justify-end">
           <button
             type="button"
             className="rounded-full border border-accent-ink bg-background px-5 py-2.5 font-sans text-[11px] font-bold uppercase tracking-[0.22em] text-accent-ink transition-all duration-300 ease-out hover:scale-[1.03] hover:bg-accent-ink hover:text-primary-foreground active:scale-[0.98]"
@@ -445,11 +1078,11 @@ function Index() {
             {t.illu.seeMore}
           </button>
         </div>
-      </section>
+      </IllustrationStarCursor>
 
       {/* Social Media */}
       <section id="social" className="bg-secondary/40 dark:bg-secondary/75">
-        <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-24 md:py-32">
+        <div className="page-shell py-24 md:py-32">
           <Reveal className="mb-14 flex items-end justify-between gap-6 flex-wrap">
             <div>
               <h2 className="font-eighties-condensed text-4xl md:text-6xl font-normal text-foreground"><span className="text-accent-ink">{t.social.title}</span></h2>
@@ -499,7 +1132,7 @@ function Index() {
 
       {/* Contact */}
       <section id="contact" className="border-t border-border/60 dark:border-border bg-contact text-contact-fg">
-        <div className="mx-auto max-w-[1300px] px-6 md:px-10 pt-10 md:pt-12 pb-14 md:pb-16 text-center">
+        <div className="page-shell pt-10 md:pt-12 pb-14 md:pb-16 text-center">
           <Reveal className="flex w-full flex-col items-center text-center">
             <p className="font-coolvetica text-[0.7rem] font-normal uppercase tracking-[0.22em] text-contact-fg pl-[0.22em]">
               {t.contact.eyebrow}
@@ -529,7 +1162,7 @@ function Index() {
               <div className="inline-flex items-center justify-center gap-3 rounded-full border border-contact-fg/10 dark:border-contact-fg/20 bg-contact-fg/10 dark:bg-contact-fg/20 px-5 py-3 shadow-sm transition-colors hover:border-accent-ink/70">
                 <a
                   href={`mailto:${t.contact.email}`}
-                  className="font-coolvetica text-sm md:text-base font-bold tracking-[0.08em] text-contact-fg transition-colors hover:text-accent"
+                  className="font-coolvetica text-sm md:text-base font-light tracking-[0.08em] text-contact-fg transition-colors hover:text-accent"
                 >
                   {t.contact.email}
                 </a>
@@ -588,7 +1221,7 @@ function Index() {
           </Reveal>
         </div>
         <div className="border-t border-contact-fg/10 dark:border-contact-fg/20">
-          <div className="mx-auto max-w-[1300px] px-6 md:px-10 py-3 text-center font-coolvetica text-[11px] tracking-[0.18em] uppercase opacity-60 dark:opacity-75">
+          <div className="page-shell py-3 text-center font-coolvetica text-[11px] tracking-[0.18em] uppercase opacity-60 dark:opacity-75">
             {t.contact.footer}
           </div>
         </div>
